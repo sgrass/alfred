@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ItemMainCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.ItemMainCategory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="main_category_name" property="mainCategoryName" jdbcType="VARCHAR" />
+    <result column="color" property="color" jdbcType="VARCHAR" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="index_id" property="indexId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="printer_id" property="printerId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="categoryResultMap" type="com.alfred.vo.ItemMainCategoryVO" >
+    <id column="m_id" property="id" jdbcType="INTEGER" />
+    <result column="main_category_name" property="mainCategoryName" jdbcType="VARCHAR" />
+    <result column="m_color" property="color" jdbcType="VARCHAR" />
+    <result column="m_restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="m_is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="m_index_id" property="indexId" jdbcType="INTEGER" />
+    <result column="m_user_id" property="userId" jdbcType="INTEGER" />
+    <result column="m_printer_id" property="printerId" jdbcType="INTEGER" />
+    <result column="m_create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="m_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <collection property="itemCategoryList" ofType="com.alfred.model.ItemCategory" column="c_id">
+			<id column="c_id" property="id" jdbcType="INTEGER" />
+	    <result column="item_category_name" property="itemCategoryName" jdbcType="VARCHAR" />
+	    <result column="super_category_id" property="superCategoryId" jdbcType="INTEGER" />
+	    <result column="c_color" property="color" jdbcType="VARCHAR" />
+	    <result column="item_main_category_id" property="itemMainCategoryId" jdbcType="INTEGER" />
+	    <result column="c_restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+	    <result column="c_is_active" property="isActive" jdbcType="INTEGER" />
+	    <result column="c_index_id" property="indexId" jdbcType="INTEGER" />
+	    <result column="printer_id" property="printerId" jdbcType="INTEGER" />
+	    <result column="c_user_id" property="userId" jdbcType="INTEGER" />
+	    <result column="c_create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="c_update_time" property="updateTime" jdbcType="TIMESTAMP" />    	
+    </collection>
+  </resultMap>
+  
+  <select id="selectByRestaurant" resultMap="categoryResultMap" parameterType="java.lang.Integer">
+  	SELECT 
+  	m.id as m_id, m.main_category_name, m.color as m_color, m.restaurant_id as m_restaurant_id, m.is_active as m_is_active,
+  	m.index_id as m_index_id, m.user_id as m_user_id, m.printer_id as m_printer_id, m.create_time as m_create_time, m.update_time as m_update_time, 
+  	c.id as c_id, c.item_category_name, c.super_category_id, c.color as c_color, c.item_main_category_id, c.restaurant_id as c_restaurant_id, 
+    c.is_active as c_is_active, c.index_id as c_index_id, c.printer_id, c.user_id as c_user_id, c.create_time as c_create_time, c.update_time as c_update_time
+    FROM item_main_category m LEFT JOIN item_category c ON m.id=c.item_main_category_id 
+    WHERE m.is_active>=0 AND m.restaurant_id=#{restaurantId,jdbcType=INTEGER}
+  </select>
+  
+  <sql id="Base_Column_List" >
+    id, main_category_name, color, restaurant_id, is_active, index_id, user_id, printer_id, create_time, 
+    update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.ItemMainCategory" >
+    select
+    <include refid="Base_Column_List" />
+    from item_main_category
+    <where >
+      <if test="mainCategoryName != null" >
+        AND main_category_name = #{mainCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="color != null" >
+        AND color = #{color,jdbcType=VARCHAR}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null" >
+        AND is_active = #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="indexId != null" >
+        AND index_id = #{indexId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="printerId != null" >
+        AND printer_id = #{printerId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from item_main_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from item_main_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id"  parameterType="com.alfred.model.ItemMainCategory" >
+    insert into item_main_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mainCategoryName != null" >
+        main_category_name,
+      </if>
+      <if test="color != null" >
+        color,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+      <if test="indexId != null" >
+        index_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="printerId != null" >
+        printer_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mainCategoryName != null" >
+        #{mainCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="indexId != null" >
+        #{indexId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="printerId != null" >
+        #{printerId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.ItemMainCategory" >
+    update item_main_category
+    <set >
+      <if test="mainCategoryName != null" >
+        main_category_name = #{mainCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        color = #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="indexId != null" >
+        index_id = #{indexId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="printerId != null" >
+        printer_id = #{printerId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+ 
+   <update id="updatePrintGroupId" parameterType="com.alfred.model.ItemMainCategory" >
+	update item_main_category
+	<set>
+		<if test="printerId != null">
+			printer_id = null,
+		</if>
+		<if test="updateTime != null">
+			update_time = #{updateTime,jdbcType=TIMESTAMP},
+		</if>
+	</set>
+	<where>
+		<if test="userId != null">
+			and user_id = #{userId,jdbcType=INTEGER}
+		</if>
+		<if test="restaurantId != null">
+			and restaurant_id = #{restaurantId,jdbcType=INTEGER}
+		</if>
+		<if test="printerId != null">
+			and printer_id = #{printerId,jdbcType=INTEGER}
+		</if>
+	</where>
+    
+  </update>
+  
+  
+</mapper>

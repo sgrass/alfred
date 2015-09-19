@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.PrinterMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.Printer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="printer_group_name" property="printerGroupName" jdbcType="VARCHAR" />
+    <result column="printer_name" property="printerName" jdbcType="VARCHAR" />
+    <result column="printer_location" property="printerLocation" jdbcType="VARCHAR" />
+    <result column="printer_type" property="printerType" jdbcType="VARCHAR" />
+    <result column="q_print" property="qPrint" jdbcType="VARCHAR" />
+    <result column="is_cashdrawer" property="isCashdrawer" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="PrinterGroupResultMap" type="com.alfred.vo.PrinterGroupVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="printer_group_name" property="printerGroupName" jdbcType="VARCHAR" />
+    
+    <collection property="printerGroupList" ofType="com.alfred.model.PrinterGroup" column="b_id">
+		<id column="b_id" property="id" jdbcType="INTEGER" />
+	    <result column="printer_id" property="printerId" jdbcType="INTEGER" />
+	    <result column="printer_name" property="printerName" jdbcType="VARCHAR" />
+	    
+    </collection>
+  </resultMap>
+
+	<select id="selectPrinterGroup" resultMap="PrinterGroupResultMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		a.id,
+		a.printer_group_name,
+		b.printer_group_id,
+		b.printer_id,
+		b.id b_id,
+		(SELECT
+		printer_name
+		FROM
+		printer c
+		WHERE c.id = b.printer_id) printer_name
+		FROM
+		printer a LEFT JOIN
+		printer_group b
+		ON a.id=b.printer_group_id
+		<where>
+			<if test="printerType != null">
+				AND a.printer_type = #{printerType,jdbcType=VARCHAR}
+			</if>
+			<if test="companyId != null">
+				AND a.company_id = #{companyId,jdbcType=INTEGER}
+			</if>
+			<if test="restaurantId != null">
+				AND a.restaurant_id = #{restaurantId,jdbcType=INTEGER}
+			</if>
+			<if test="type != null">
+				AND a.type = #{type,jdbcType=INTEGER}
+			</if>
+
+		</where>
+	</select>
+  
+  
+  
+  
+  
+ <sql id="Base_Column_List" >
+    id, printer_group_name, printer_name, printer_location, printer_type, q_print, is_cashdrawer, 
+    company_id, restaurant_id, type, create_time, update_time
+  </sql>
+  <select id="selectByPrinter" resultMap="BaseResultMap" parameterType="com.alfred.model.Printer" >
+    select
+    <include refid="Base_Column_List" />
+    from printer
+    <where >
+      <if test="printerName != null" >
+        AND printer_name = #{printerName,jdbcType=VARCHAR}
+      </if>
+       <if test="id != null" >
+        <![CDATA[ AND id != #{id,jdbcType=INTEGER} ]]>
+      </if>
+     <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+ 
+   <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.Printer" >
+    select
+    <include refid="Base_Column_List" />
+    from printer
+    <where >
+      <if test="printerGroupName != null" >
+        AND printer_group_name = #{printerGroupName,jdbcType=VARCHAR}
+      </if>
+      <if test="printerName != null" >
+        AND printer_name = #{printerName,jdbcType=VARCHAR}
+      </if>
+      <if test="printerLocation != null" >
+        AND printer_location = #{printerLocation,jdbcType=VARCHAR}
+      </if>
+      <if test="printerType != null" >
+        AND printer_type = #{printerType,jdbcType=VARCHAR}
+      </if>
+      <if test="qPrint != null" >
+        AND q_print = #{qPrint,jdbcType=VARCHAR}
+      </if>
+      <if test="isCashdrawer != null" >
+        AND is_cashdrawer = #{isCashdrawer,jdbcType=INTEGER}
+      </if>
+      <if test="companyId != null" >
+        AND company_id = #{companyId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        AND type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from printer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from printer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id"  parameterType="com.alfred.model.Printer" >
+    insert into printer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="printerGroupName != null" >
+        printer_group_name,
+      </if>
+      <if test="printerName != null" >
+        printer_name,
+      </if>
+      <if test="printerLocation != null" >
+        printer_location,
+      </if>
+      <if test="printerType != null" >
+        printer_type,
+      </if>
+      <if test="qPrint != null" >
+        q_print,
+      </if>
+      <if test="isCashdrawer != null" >
+        is_cashdrawer,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="printerGroupName != null" >
+        #{printerGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="printerName != null" >
+        #{printerName,jdbcType=VARCHAR},
+      </if>
+      <if test="printerLocation != null" >
+        #{printerLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="printerType != null" >
+        #{printerType,jdbcType=VARCHAR},
+      </if>
+      <if test="qPrint != null" >
+        #{qPrint,jdbcType=VARCHAR},
+      </if>
+      <if test="isCashdrawer != null" >
+        #{isCashdrawer,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.Printer" >
+    update printer
+    <set >
+      <if test="printerGroupName != null" >
+        printer_group_name = #{printerGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="printerName != null" >
+        printer_name = #{printerName,jdbcType=VARCHAR},
+      </if>
+      <if test="printerLocation != null" >
+        printer_location = #{printerLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="printerType != null" >
+        printer_type = #{printerType,jdbcType=VARCHAR},
+      </if>
+      <if test="qPrint != null" >
+        q_print = #{qPrint,jdbcType=VARCHAR},
+      </if>
+      <if test="isCashdrawer != null" >
+        is_cashdrawer = #{isCashdrawer,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+ 
+  
+  
+</mapper>

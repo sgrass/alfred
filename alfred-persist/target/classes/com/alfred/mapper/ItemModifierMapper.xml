@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ItemModifierMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.ItemModifier" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="item_category_id" property="itemCategoryId" jdbcType="INTEGER" />
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="modifier_id" property="modifierId" jdbcType="INTEGER" />
+    <result column="modifier_category_id" property="modifierCategoryId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, restaurant_id, item_category_id, item_id, type, modifier_id, modifier_category_id
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.ItemModifier" >
+    select
+    <include refid="Base_Column_List" />
+    from item_modifier
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemId != null" >
+        AND item_id = #{itemId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        AND type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="modifierId != null" >
+        AND modifier_id = #{modifierId,jdbcType=INTEGER}
+      </if>
+      <if test="modifierCategoryId != null" >
+        AND modifier_category_id = #{modifierCategoryId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from item_modifier
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from item_modifier
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteByItemId" parameterType="com.alfred.model.ItemModifier" >
+    delete from item_modifier where restaurant_id = #{restaurantId,jdbcType=INTEGER} AND item_id = #{itemId,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteBySubCateId" parameterType="com.alfred.model.ItemModifier" >
+    delete from item_modifier where restaurant_id = #{restaurantId,jdbcType=INTEGER} AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.alfred.model.ItemModifier" >
+    insert into item_modifier
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="modifierId != null" >
+        modifier_id,
+      </if>
+      <if test="modifierCategoryId != null" >
+        modifier_category_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryId != null" >
+        #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierId != null" >
+        #{modifierId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierCategoryId != null" >
+        #{modifierCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateById" parameterType="com.alfred.model.ItemModifier" >
+    update item_modifier
+    <set >
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierId != null" >
+        modifier_id = #{modifierId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierCategoryId != null" >
+        modifier_category_id = #{modifierCategoryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

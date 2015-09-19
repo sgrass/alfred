@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.InventoryMaterialStockMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.InventoryMaterialStock" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="material_id" property="materialId" jdbcType="INTEGER" />
+    <result column="material_name" property="materialName" jdbcType="VARCHAR" />
+    <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+    <result column="stock_qty" property="stockQty" jdbcType="INTEGER" />
+    <result column="stock_total_price" property="stockTotalPrice" jdbcType="DECIMAL" />
+    <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+ 
+  <resultMap id="ResultStockMap" type="com.alfred.vo.InventoryMaterialStockVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="material_id" property="materialId" jdbcType="INTEGER" />
+    <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+    <result column="raw_material_name" property="materialName" jdbcType="VARCHAR" />
+    <result column="stock_qty" property="stockQty" jdbcType="INTEGER" />
+    <result column="stock_total_price" property="stockTotalPrice" jdbcType="DECIMAL" />
+    <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, restaurant_id, material_id, material_name, supplier_id, supplier_name, stock_qty, 
+    stock_total_price, unit_price, create_time, update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.InventoryMaterialStock" >
+    select
+    <include refid="Base_Column_List" />
+    from inventory_material_stock
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="materialId != null" >
+        AND material_id = #{materialId,jdbcType=INTEGER}
+      </if>
+      <if test="supplierId != null" >
+        AND supplier_id = #{supplierId,jdbcType=INTEGER}
+      </if>
+      <if test="stockQty != null" >
+        AND stock_qty = #{stockQty,jdbcType=INTEGER}
+      </if>
+      <if test="stockTotalPrice != null" >
+        AND stock_total_price = #{stockTotalPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="unitPrice != null" >
+        AND unit_price = #{unitPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  
+	<select id="selectByParamReoprt" resultMap="BaseResultMap"
+		parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" />
+		from inventory_material_stock
+		<where>
+			<if test="restaurantId != null">
+				AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+			</if>
+			<if test="materialId != null">
+				AND material_id = #{materialId,jdbcType=INTEGER}
+			</if>
+			<if test="supplierId != null">
+				AND supplier_id = #{supplierId,jdbcType=INTEGER}
+			</if>
+			<if test="stockQty != null">
+				AND stock_qty = #{stockQty,jdbcType=INTEGER}
+			</if>
+			<if test="stockTotalPrice != null">
+				AND stock_total_price = #{stockTotalPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="unitPrice != null">
+				AND unit_price = #{unitPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+				AND create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+				AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime != null">
+        <![CDATA[ and
+	      create_time > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  create_time < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+			</if>
+			<if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+			</if>
+		</where>
+	</select>
+	<select id="selectByParamReoprtCount" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		select count(*)
+		from inventory_material_stock
+		<where>
+			<if test="restaurantId != null">
+				AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+			</if>
+			<if test="materialId != null">
+				AND material_id = #{materialId,jdbcType=INTEGER}
+			</if>
+			<if test="supplierId != null">
+				AND supplier_id = #{supplierId,jdbcType=INTEGER}
+			</if>
+			<if test="stockQty != null">
+				AND stock_qty = #{stockQty,jdbcType=INTEGER}
+			</if>
+			<if test="stockTotalPrice != null">
+				AND stock_total_price = #{stockTotalPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="unitPrice != null">
+				AND unit_price = #{unitPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+				AND create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+				AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime != null">
+        <![CDATA[ and
+	      create_time > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  create_time < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+			</if>
+			<if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+			</if>
+		</where>
+	</select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <select id="selectStock" resultMap="ResultStockMap" parameterType="com.alfred.model.InventoryMaterialStock" >
+	SELECT id, restaurant_id, material_id, supplier_id, stock_qty,
+	stock_total_price, unit_price,
+	create_time, update_time ,(SELECT t.raw_material_name FROM inventory_raw_material t
+	WHERE t.id= material_id) raw_material_name,
+	(SELECT t.supplier_name FROM inventory_supplier t WHERE t.id= supplier_id)
+	supplier_name
+	FROM inventory_material_stock
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="materialId != null" >
+        AND material_id = #{materialId,jdbcType=INTEGER}
+      </if>
+      <if test="supplierId != null" >
+        AND supplier_id = #{supplierId,jdbcType=INTEGER}
+      </if>
+      <if test="stockQty != null" >
+        AND stock_qty = #{stockQty,jdbcType=INTEGER}
+      </if>
+      <if test="stockTotalPrice != null" >
+        AND stock_total_price = #{stockTotalPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="unitPrice != null" >
+        AND unit_price = #{unitPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from inventory_material_stock
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from inventory_material_stock
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.InventoryMaterialStock" >
+     insert into inventory_material_stock
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="materialId != null" >
+        material_id,
+      </if>
+      <if test="materialName != null" >
+        material_name,
+      </if>
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="supplierName != null" >
+        supplier_name,
+      </if>
+      <if test="stockQty != null" >
+        stock_qty,
+      </if>
+      <if test="stockTotalPrice != null" >
+        stock_total_price,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="materialId != null" >
+        #{materialId,jdbcType=INTEGER},
+      </if>
+      <if test="materialName != null" >
+        #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierName != null" >
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="stockQty != null" >
+        #{stockQty,jdbcType=INTEGER},
+      </if>
+      <if test="stockTotalPrice != null" >
+        #{stockTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.InventoryMaterialStock" >
+   update inventory_material_stock
+    <set >
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="materialId != null" >
+        material_id = #{materialId,jdbcType=INTEGER},
+      </if>
+      <if test="materialName != null" >
+        material_name = #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierName != null" >
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="stockQty != null" >
+        stock_qty = #{stockQty,jdbcType=INTEGER},
+      </if>
+      <if test="stockTotalPrice != null" >
+        stock_total_price = #{stockTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,1090 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ReportDaySalesMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.ReportDaySales" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="restaurant_name" property="restaurantName" jdbcType="VARCHAR" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="revenue_name" property="revenueName" jdbcType="VARCHAR" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="item_sales" property="itemSales" jdbcType="DECIMAL" />
+    <result column="item_sales_qty" property="itemSalesQty" jdbcType="INTEGER" />
+    <result column="discount_per" property="discountPer" jdbcType="DECIMAL" />
+    <result column="discount_per_qty" property="discountPerQty" jdbcType="INTEGER" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="discount_qty" property="discountQty" jdbcType="INTEGER" />
+    <result column="discount_amt" property="discountAmt" jdbcType="DECIMAL" />
+    <result column="foc_item" property="focItem" jdbcType="DECIMAL" />
+    <result column="foc_item_qty" property="focItemQty" jdbcType="INTEGER" />
+    <result column="foc_bill" property="focBill" jdbcType="DECIMAL" />
+    <result column="foc_bill_qty" property="focBillQty" jdbcType="INTEGER" />
+    <result column="total_sales" property="totalSales" jdbcType="DECIMAL" />
+    <result column="cash" property="cash" jdbcType="DECIMAL" />
+    <result column="cash_qty" property="cashQty" jdbcType="INTEGER" />
+    <result column="nets" property="nets" jdbcType="DECIMAL" />
+    <result column="nets_qty" property="netsQty" jdbcType="INTEGER" />
+    <result column="visa" property="visa" jdbcType="DECIMAL" />
+    <result column="visa_qty" property="visaQty" jdbcType="INTEGER" />
+    <result column="mc" property="mc" jdbcType="DECIMAL" />
+    <result column="mc_qty" property="mcQty" jdbcType="INTEGER" />
+    <result column="amex" property="amex" jdbcType="DECIMAL" />
+    <result column="amex_qty" property="amexQty" jdbcType="INTEGER" />
+    <result column="jbl" property="jbl" jdbcType="DECIMAL" />
+    <result column="jbl_qty" property="jblQty" jdbcType="INTEGER" />
+    <result column="union_pay" property="unionPay" jdbcType="DECIMAL" />
+    <result column="union_pay_qty" property="unionPayQty" jdbcType="INTEGER" />
+    <result column="diner" property="diner" jdbcType="DECIMAL" />
+    <result column="diner_qty" property="dinerQty" jdbcType="INTEGER" />
+    <result column="holdld" property="holdld" jdbcType="DECIMAL" />
+    <result column="holdld_qty" property="holdldQty" jdbcType="INTEGER" />
+    <result column="total_card" property="totalCard" jdbcType="DECIMAL" />
+    <result column="total_card_qty" property="totalCardQty" jdbcType="INTEGER" />
+    <result column="total_cash" property="totalCash" jdbcType="DECIMAL" />
+    <result column="total_cash_qty" property="totalCashQty" jdbcType="INTEGER" />
+    <result column="total_bill_void" property="totalBillVoid" jdbcType="DECIMAL" />
+    <result column="total_bill_void_qty" property="totalBillVoidQty" jdbcType="INTEGER" />
+    <result column="total_void" property="totalVoid" jdbcType="DECIMAL" />
+    <result column="total_void_qty" property="totalVoidQty" jdbcType="INTEGER" />
+    <result column="nett_sales" property="nettSales" jdbcType="DECIMAL" />
+    <result column="total_bills" property="totalBills" jdbcType="INTEGER" />
+    <result column="open_count" property="openCount" jdbcType="INTEGER" />
+    <result column="first_receipt" property="firstReceipt" jdbcType="INTEGER" />
+    <result column="last_receipt" property="lastReceipt" jdbcType="INTEGER" />
+    <result column="total_tax" property="totalTax" jdbcType="DECIMAL" />
+    <result column="order_qty" property="orderQty" jdbcType="INTEGER" />
+    <result column="person_qty" property="personQty" jdbcType="INTEGER" />
+    <result column="total_balance_price" property="totalBalancePrice" jdbcType="DECIMAL" />
+  </resultMap>
+ 
+   <resultMap id="SalesResultMap" type="com.alfred.vo.ReportDaySalesVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="restaurant_name" property="restaurantName" jdbcType="VARCHAR" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="revenue_name" property="revenueName" jdbcType="VARCHAR" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="item_sales" property="itemSales" jdbcType="DECIMAL" />
+    <result column="item_sales_qty" property="itemSalesQty" jdbcType="INTEGER" />
+    <result column="discount_per" property="discountPer" jdbcType="DECIMAL" />
+    <result column="discount_per_qty" property="discountPerQty" jdbcType="INTEGER" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="discount_qty" property="discountQty" jdbcType="INTEGER" />
+    <result column="discount_amt" property="discountAmt" jdbcType="DECIMAL" />
+    <result column="foc_item" property="focItem" jdbcType="DECIMAL" />
+    <result column="foc_item_qty" property="focItemQty" jdbcType="INTEGER" />
+    <result column="foc_bill" property="focBill" jdbcType="DECIMAL" />
+    <result column="foc_bill_qty" property="focBillQty" jdbcType="INTEGER" />
+    <result column="total_sales" property="totalSales" jdbcType="DECIMAL" />
+    <result column="cash" property="cash" jdbcType="DECIMAL" />
+    <result column="cash_qty" property="cashQty" jdbcType="INTEGER" />
+    <result column="nets" property="nets" jdbcType="DECIMAL" />
+    <result column="nets_qty" property="netsQty" jdbcType="INTEGER" />
+    <result column="visa" property="visa" jdbcType="DECIMAL" />
+    <result column="visa_qty" property="visaQty" jdbcType="INTEGER" />
+    <result column="mc" property="mc" jdbcType="DECIMAL" />
+    <result column="mc_qty" property="mcQty" jdbcType="INTEGER" />
+    <result column="amex" property="amex" jdbcType="DECIMAL" />
+    <result column="amex_qty" property="amexQty" jdbcType="INTEGER" />
+    <result column="jbl" property="jbl" jdbcType="DECIMAL" />
+    <result column="jbl_qty" property="jblQty" jdbcType="INTEGER" />
+    <result column="union_pay" property="unionPay" jdbcType="DECIMAL" />
+    <result column="union_pay_qty" property="unionPayQty" jdbcType="INTEGER" />
+    <result column="diner" property="diner" jdbcType="DECIMAL" />
+    <result column="diner_qty" property="dinerQty" jdbcType="INTEGER" />
+    <result column="holdld" property="holdld" jdbcType="DECIMAL" />
+    <result column="holdld_qty" property="holdldQty" jdbcType="INTEGER" />
+    <result column="total_card" property="totalCard" jdbcType="DECIMAL" />
+    <result column="total_card_qty" property="totalCardQty" jdbcType="INTEGER" />
+    <result column="total_cash" property="totalCash" jdbcType="DECIMAL" />
+    <result column="total_cash_qty" property="totalCashQty" jdbcType="INTEGER" />
+    <result column="total_bill_void" property="totalBillVoid" jdbcType="DECIMAL" />
+    <result column="total_bill_void_qty" property="totalBillVoidQty" jdbcType="INTEGER" />
+    <result column="total_void" property="totalVoid" jdbcType="DECIMAL" />
+    <result column="total_void_qty" property="totalVoidQty" jdbcType="INTEGER" />
+    <result column="nett_sales" property="nettSales" jdbcType="DECIMAL" />
+    <result column="total_bills" property="totalBills" jdbcType="INTEGER" />
+    <result column="open_count" property="openCount" jdbcType="INTEGER" />
+    <result column="first_receipt" property="firstReceipt" jdbcType="INTEGER" />
+    <result column="last_receipt" property="lastReceipt" jdbcType="INTEGER" />
+    <result column="total_tax" property="totalTax" jdbcType="DECIMAL" />
+    <result column="order_qty" property="orderQty" jdbcType="INTEGER" />
+    <result column="person_qty" property="personQty" jdbcType="INTEGER" />
+    <result column="total_balance_price" property="totalBalancePrice" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  
+  <select id="selectByParamSales" resultMap="BaseResultMap" parameterType="java.util.HashMap"  >
+    SELECT a.id,a.restaurant_name,a.revenue_name,a.business_date,a.item_sales,a.total_sales,
+    a.total_tax FROM report_day_sales a
+    <where >
+      <if test="restaurantId != null" >
+        AND a.restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND a.revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null" >
+        <![CDATA[ and
+	      a.business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  a.business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+        GROUP BY DATE(a.business_date)
+    </where>
+     <if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+	 </if>
+  </select>
+  
+    <select id="getSalesCount" resultType="java.lang.Integer" parameterType="java.util.HashMap"  >
+    SELECT count(*)
+     FROM report_day_sales a
+    <where >
+      <if test="restaurantId != null" >
+        AND a.restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND a.revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null" >
+        <![CDATA[ and
+	      a.business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  a.business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+     
+    </where>
+    
+  </select>
+  
+  
+  
+   <select id="querySalesRevenueAll" resultMap="BaseResultMap" parameterType="java.util.HashMap"  >
+    SELECT a.id,a.restaurant_name,a.revenue_name,a.business_date,SUM(a.item_sales) item_sales 
+    ,SUM(a.total_sales) total_sales,SUM(a.total_tax) total_tax FROM report_day_sales a
+    <where >
+      <if test="restaurantId != null" >
+        AND a.restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND a.revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null" >
+        <![CDATA[ and
+	      a.business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  a.business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+     GROUP BY a.business_date
+      <if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+	  </if>
+    </where>
+  </select>
+  
+  
+   <select id="getSalesAllCount" resultType="java.lang.Integer" parameterType="java.util.HashMap"  >
+  SELECT COUNT(*) FROM
+	(SELECT
+	COUNT(*)
+	 FROM report_day_sales a
+    <where >
+      <if test="restaurantId != null" >
+        AND a.restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND a.revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null" >
+        <![CDATA[ and
+	      a.business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  a.business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+      GROUP BY DATE(business_date)) t
+    </where>
+  </select>
+
+  <select id="selectByParamSalesExcel" resultMap="SalesResultMap" parameterType="java.util.HashMap"  >
+	SELECT a.id,a.restaurant_id,a.restaurant_name
+	,a.revenue_id,a.revenue_name,a.business_date
+	,a.item_sales,a.item_sales_qty,a.discount_per,
+	a.discount_per_qty,a.discount,a.discount_qty,
+	a.discount_amt,a.foc_bill,a.foc_bill_qty,a.total_sales,
+	a.cash,a.cash_qty,a.nets,a.nets_qty,a.visa,a.visa_qty,
+	a.mc,a.mc_qty,a.amex,a.amex_qty,a.jbl,a.jbl_qty,
+	a.union_pay,a.union_pay_qty,a.diner,a.diner_qty,
+	a.holdld,a.holdld_qty,a.total_card,a.total_card_qty,
+	a.total_cash,a.total_cash_qty,a.total_void,a.total_void_qty,
+	a.nett_sales,a.total_bills,a.open_count,a.first_receipt,
+	a.last_receipt,(SELECT SUM(b.tax_amount) FROM report_day_tax b WHERE
+	a.id=b.day_sales_id) AS total_tax
+	FROM report_day_sales a
+    <where >
+      <if test="restaurantId != null" >
+        AND a.restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND a.restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND a.revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND a.revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND a.business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="itemSales != null" >
+        AND a.item_sales = #{itemSales,jdbcType=DECIMAL}
+      </if>
+      <if test="itemSalesQty != null" >
+        AND a.item_sales_qty = #{itemSalesQty,jdbcType=INTEGER}
+      </if>
+      <if test="discountPer != null" >
+        AND a.discount_per = #{discountPer,jdbcType=DECIMAL}
+      </if>
+      <if test="discountPerQty != null" >
+        AND a.discount_per_qty = #{discountPerQty,jdbcType=INTEGER}
+      </if>
+      <if test="discount != null" >
+        AND a.discount = #{discount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountQty != null" >
+        AND a.discount_qty = #{discountQty,jdbcType=INTEGER}
+      </if>
+      <if test="discountAmt != null" >
+        AND a.discount_amt = #{discountAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="focBill != null" >
+        AND a.foc_bill = #{focBill,jdbcType=DECIMAL}
+      </if>
+      <if test="focBillQty != null" >
+        AND a.foc_bill_qty = #{focBillQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalSales != null" >
+        AND a.total_sales = #{totalSales,jdbcType=DECIMAL}
+      </if>
+      <if test="cash != null" >
+        AND a.cash = #{cash,jdbcType=DECIMAL}
+      </if>
+      <if test="cashQty != null" >
+        AND a.cash_qty = #{cashQty,jdbcType=INTEGER}
+      </if>
+      <if test="nets != null" >
+        AND a.nets = #{nets,jdbcType=DECIMAL}
+      </if>
+      <if test="netsQty != null" >
+        AND a.nets_qty = #{netsQty,jdbcType=INTEGER}
+      </if>
+      <if test="visa != null" >
+        AND a.visa = #{visa,jdbcType=DECIMAL}
+      </if>
+      <if test="visaQty != null" >
+        AND a.visa_qty = #{visaQty,jdbcType=INTEGER}
+      </if>
+      <if test="mc != null" >
+        AND a.mc = #{mc,jdbcType=DECIMAL}
+      </if>
+      <if test="mcQty != null" >
+        AND a.mc_qty = #{mcQty,jdbcType=INTEGER}
+      </if>
+      <if test="amex != null" >
+        AND a.amex = #{amex,jdbcType=DECIMAL}
+      </if>
+      <if test="amexQty != null" >
+        AND a.amex_qty = #{amexQty,jdbcType=INTEGER}
+      </if>
+      <if test="jbl != null" >
+        AND a.jbl = #{jbl,jdbcType=DECIMAL}
+      </if>
+      <if test="jblQty != null" >
+        AND a.jbl_qty = #{jblQty,jdbcType=INTEGER}
+      </if>
+      <if test="unionPay != null" >
+        AND a.union_pay = #{unionPay,jdbcType=DECIMAL}
+      </if>
+      <if test="unionPayQty != null" >
+        AND a.union_pay_qty = #{unionPayQty,jdbcType=INTEGER}
+      </if>
+      <if test="diner != null" >
+        AND a.diner = #{diner,jdbcType=DECIMAL}
+      </if>
+      <if test="dinerQty != null" >
+        AND a.diner_qty = #{dinerQty,jdbcType=INTEGER}
+      </if>
+      <if test="holdld != null" >
+        AND a.holdld = #{holdld,jdbcType=DECIMAL}
+      </if>
+      <if test="holdldQty != null" >
+        AND a.holdld_qty = #{holdldQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalCard != null" >
+        AND a.total_card = #{totalCard,jdbcType=DECIMAL}
+      </if>
+      <if test="totalCardQty != null" >
+        AND a.total_card_qty = #{totalCardQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalCash != null" >
+        AND a.total_cash = #{totalCash,jdbcType=DECIMAL}
+      </if>
+      <if test="totalCashQty != null" >
+        AND a.total_cash_qty = #{totalCashQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalVoid != null" >
+        AND a.total_void = #{totalVoid,jdbcType=DECIMAL}
+      </if>
+      <if test="totalVoidQty != null" >
+        AND a.total_void_qty = #{totalVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="nettSales != null" >
+        AND a.nett_sales = #{nettSales,jdbcType=DECIMAL}
+      </if>
+      <if test="totalBills != null" >
+        AND a.total_bills = #{totalBills,jdbcType=INTEGER}
+      </if>
+      <if test="openCount != null" >
+        AND a.open_count = #{openCount,jdbcType=INTEGER}
+      </if>
+      <if test="firstReceipt != null" >
+        AND a.first_receipt = #{firstReceipt,jdbcType=INTEGER}
+      </if>
+      <if test="lastReceipt != null" >
+        AND a.last_receipt = #{lastReceipt,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null" >
+        <![CDATA[ and
+	      a.business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  a.business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+      <if test="businessDate != null" >
+       <![CDATA[ and
+	      business_date >= STR_TO_DATE(#{businessDate,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date <= date_add(STR_TO_DATE(#{businessDate,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+      
+    </where>
+  </select>
+  
+  
+  
+  <select id="querySalesPdf" resultMap="SalesResultMap" parameterType="java.util.HashMap"  >
+	SELECT SUM(item_sales)item_sales,
+	SUM(item_sales_qty)item_sales_qty,SUM(foc_item)foc_item,SUM(foc_item_qty)
+	foc_item_qty,
+	SUM(total_bill_void)total_bill_void,SUM(total_bill_void_qty)total_bill_void_qty,
+	SUM(discount_per)discount_per, SUM(discount_per_qty)discount_per_qty,
+	SUM(discount)discount, SUM(discount_qty)discount_qty,
+	SUM(discount_amt)discount_amt, SUM(foc_bill) foc_bill,
+	SUM(foc_bill_qty) foc_bill_qty, SUM(total_sales) total_sales, SUM(cash)
+	cash,
+	SUM(cash_qty)cash_qty, SUM(nets)nets, SUM(nets_qty)nets_qty, SUM(visa)visa,
+	SUM(visa_qty)visa_qty, SUM(mc)mc, SUM(mc_qty)mc_qty, SUM(amex)amex,
+	SUM(amex_qty) amex_qty, SUM(jbl)jbl, SUM(jbl_qty)jbl_qty,
+	SUM(union_pay)union_pay, SUM(union_pay_qty)union_pay_qty,
+	SUM(diner)diner, SUM(diner_qty)diner_qty,
+	SUM(holdld)holdld,
+	SUM(holdld_qty)holdld_qty,
+	SUM(total_card)total_card,
+	SUM(total_card_qty)total_card_qty,
+	SUM(total_cash)total_cash,
+	SUM(total_cash_qty)total_cash_qty,
+	SUM(total_void)total_void,
+	SUM(total_void_qty)total_void_qty,
+	SUM(nett_sales)nett_sales,
+	SUM(total_bills)total_bills,
+	SUM(open_count)open_count,
+	SUM(first_receipt)first_receipt,SUM(order_qty)order_qty,SUM(person_qty)person_qty,SUM(total_tax)
+	total_tax,
+	SUM(last_receipt)last_receipt FROM report_day_sales
+
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null" >
+        <![CDATA[ and
+	      business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+      <if test="businessDate != null" >
+         <![CDATA[ and
+	      business_date >= STR_TO_DATE(#{businessDate,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date <= date_add(STR_TO_DATE(#{businessDate,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+      
+    </where>
+      GROUP BY DATE(business_date)
+  </select>
+  
+  <sql id="Base_Column_List" >
+    id, restaurant_id, restaurant_name, revenue_id, revenue_name, business_date, item_sales, 
+    item_sales_qty, discount_per, discount_per_qty, discount, discount_qty, discount_amt, 
+    foc_item, foc_item_qty, foc_bill, foc_bill_qty, total_sales, cash, cash_qty, nets, 
+    nets_qty, visa, visa_qty, mc, mc_qty, amex, amex_qty, jbl, jbl_qty, union_pay, union_pay_qty, 
+    diner, diner_qty, holdld, holdld_qty, total_card, total_card_qty, total_cash, total_cash_qty, 
+    total_bill_void, total_bill_void_qty, total_void, total_void_qty, nett_sales, total_bills, 
+    open_count, first_receipt, last_receipt, total_tax, order_qty, person_qty, total_balance_price
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.ReportDaySales" >
+    select
+    <include refid="Base_Column_List" />
+    from report_day_sales
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="itemSales != null" >
+        AND item_sales = #{itemSales,jdbcType=DECIMAL}
+      </if>
+      <if test="itemSalesQty != null" >
+        AND item_sales_qty = #{itemSalesQty,jdbcType=INTEGER}
+      </if>
+      <if test="discountPer != null" >
+        AND discount_per = #{discountPer,jdbcType=DECIMAL}
+      </if>
+      <if test="discountPerQty != null" >
+        AND discount_per_qty = #{discountPerQty,jdbcType=INTEGER}
+      </if>
+      <if test="discount != null" >
+        AND discount = #{discount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountQty != null" >
+        AND discount_qty = #{discountQty,jdbcType=INTEGER}
+      </if>
+      <if test="discountAmt != null" >
+        AND discount_amt = #{discountAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="focItem != null" >
+        AND foc_item = #{focItem,jdbcType=DECIMAL}
+      </if>
+      <if test="focItemQty != null" >
+        AND foc_item_qty = #{focItemQty,jdbcType=INTEGER}
+      </if>
+      <if test="focBill != null" >
+        AND foc_bill = #{focBill,jdbcType=DECIMAL}
+      </if>
+      <if test="focBillQty != null" >
+        AND foc_bill_qty = #{focBillQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalSales != null" >
+        AND total_sales = #{totalSales,jdbcType=DECIMAL}
+      </if>
+      <if test="cash != null" >
+        AND cash = #{cash,jdbcType=DECIMAL}
+      </if>
+      <if test="cashQty != null" >
+        AND cash_qty = #{cashQty,jdbcType=INTEGER}
+      </if>
+      <if test="nets != null" >
+        AND nets = #{nets,jdbcType=DECIMAL}
+      </if>
+      <if test="netsQty != null" >
+        AND nets_qty = #{netsQty,jdbcType=INTEGER}
+      </if>
+      <if test="visa != null" >
+        AND visa = #{visa,jdbcType=DECIMAL}
+      </if>
+      <if test="visaQty != null" >
+        AND visa_qty = #{visaQty,jdbcType=INTEGER}
+      </if>
+      <if test="mc != null" >
+        AND mc = #{mc,jdbcType=DECIMAL}
+      </if>
+      <if test="mcQty != null" >
+        AND mc_qty = #{mcQty,jdbcType=INTEGER}
+      </if>
+      <if test="amex != null" >
+        AND amex = #{amex,jdbcType=DECIMAL}
+      </if>
+      <if test="amexQty != null" >
+        AND amex_qty = #{amexQty,jdbcType=INTEGER}
+      </if>
+      <if test="jbl != null" >
+        AND jbl = #{jbl,jdbcType=DECIMAL}
+      </if>
+      <if test="jblQty != null" >
+        AND jbl_qty = #{jblQty,jdbcType=INTEGER}
+      </if>
+      <if test="unionPay != null" >
+        AND union_pay = #{unionPay,jdbcType=DECIMAL}
+      </if>
+      <if test="unionPayQty != null" >
+        AND union_pay_qty = #{unionPayQty,jdbcType=INTEGER}
+      </if>
+      <if test="diner != null" >
+        AND diner = #{diner,jdbcType=DECIMAL}
+      </if>
+      <if test="dinerQty != null" >
+        AND diner_qty = #{dinerQty,jdbcType=INTEGER}
+      </if>
+      <if test="holdld != null" >
+        AND holdld = #{holdld,jdbcType=DECIMAL}
+      </if>
+      <if test="holdldQty != null" >
+        AND holdld_qty = #{holdldQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalCard != null" >
+        AND total_card = #{totalCard,jdbcType=DECIMAL}
+      </if>
+      <if test="totalCardQty != null" >
+        AND total_card_qty = #{totalCardQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalCash != null" >
+        AND total_cash = #{totalCash,jdbcType=DECIMAL}
+      </if>
+      <if test="totalCashQty != null" >
+        AND total_cash_qty = #{totalCashQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalBillVoid != null" >
+        AND total_bill_void = #{totalBillVoid,jdbcType=DECIMAL}
+      </if>
+      <if test="totalBillVoidQty != null" >
+        AND total_bill_void_qty = #{totalBillVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalVoid != null" >
+        AND total_void = #{totalVoid,jdbcType=DECIMAL}
+      </if>
+      <if test="totalVoidQty != null" >
+        AND total_void_qty = #{totalVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="nettSales != null" >
+        AND nett_sales = #{nettSales,jdbcType=DECIMAL}
+      </if>
+      <if test="totalBills != null" >
+        AND total_bills = #{totalBills,jdbcType=INTEGER}
+      </if>
+      <if test="openCount != null" >
+        AND open_count = #{openCount,jdbcType=INTEGER}
+      </if>
+      <if test="firstReceipt != null" >
+        AND first_receipt = #{firstReceipt,jdbcType=INTEGER}
+      </if>
+      <if test="lastReceipt != null" >
+        AND last_receipt = #{lastReceipt,jdbcType=INTEGER}
+      </if>
+      <if test="totalTax != null" >
+        AND total_tax = #{totalTax,jdbcType=DECIMAL}
+      </if>
+      <if test="orderQty != null" >
+        AND order_qty = #{orderQty,jdbcType=INTEGER}
+      </if>
+      <if test="personQty != null" >
+        AND person_qty = #{personQty,jdbcType=INTEGER}
+      </if>
+      <if test="totalBalancePrice != null" >
+        AND total_balance_price = #{totalBalancePrice,jdbcType=DECIMAL}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_day_sales
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_day_sales
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.ReportDaySales" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into report_day_sales
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="restaurantName != null" >
+        restaurant_name,
+      </if>
+      <if test="revenueId != null" >
+        revenue_id,
+      </if>
+      <if test="revenueName != null" >
+        revenue_name,
+      </if>
+      <if test="businessDate != null" >
+        business_date,
+      </if>
+      <if test="itemSales != null" >
+        item_sales,
+      </if>
+      <if test="itemSalesQty != null" >
+        item_sales_qty,
+      </if>
+      <if test="discountPer != null" >
+        discount_per,
+      </if>
+      <if test="discountPerQty != null" >
+        discount_per_qty,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="discountQty != null" >
+        discount_qty,
+      </if>
+      <if test="discountAmt != null" >
+        discount_amt,
+      </if>
+      <if test="focItem != null" >
+        foc_item,
+      </if>
+      <if test="focItemQty != null" >
+        foc_item_qty,
+      </if>
+      <if test="focBill != null" >
+        foc_bill,
+      </if>
+      <if test="focBillQty != null" >
+        foc_bill_qty,
+      </if>
+      <if test="totalSales != null" >
+        total_sales,
+      </if>
+      <if test="cash != null" >
+        cash,
+      </if>
+      <if test="cashQty != null" >
+        cash_qty,
+      </if>
+      <if test="nets != null" >
+        nets,
+      </if>
+      <if test="netsQty != null" >
+        nets_qty,
+      </if>
+      <if test="visa != null" >
+        visa,
+      </if>
+      <if test="visaQty != null" >
+        visa_qty,
+      </if>
+      <if test="mc != null" >
+        mc,
+      </if>
+      <if test="mcQty != null" >
+        mc_qty,
+      </if>
+      <if test="amex != null" >
+        amex,
+      </if>
+      <if test="amexQty != null" >
+        amex_qty,
+      </if>
+      <if test="jbl != null" >
+        jbl,
+      </if>
+      <if test="jblQty != null" >
+        jbl_qty,
+      </if>
+      <if test="unionPay != null" >
+        union_pay,
+      </if>
+      <if test="unionPayQty != null" >
+        union_pay_qty,
+      </if>
+      <if test="diner != null" >
+        diner,
+      </if>
+      <if test="dinerQty != null" >
+        diner_qty,
+      </if>
+      <if test="holdld != null" >
+        holdld,
+      </if>
+      <if test="holdldQty != null" >
+        holdld_qty,
+      </if>
+      <if test="totalCard != null" >
+        total_card,
+      </if>
+      <if test="totalCardQty != null" >
+        total_card_qty,
+      </if>
+      <if test="totalCash != null" >
+        total_cash,
+      </if>
+      <if test="totalCashQty != null" >
+        total_cash_qty,
+      </if>
+      <if test="totalBillVoid != null" >
+        total_bill_void,
+      </if>
+      <if test="totalBillVoidQty != null" >
+        total_bill_void_qty,
+      </if>
+      <if test="totalVoid != null" >
+        total_void,
+      </if>
+      <if test="totalVoidQty != null" >
+        total_void_qty,
+      </if>
+      <if test="nettSales != null" >
+        nett_sales,
+      </if>
+      <if test="totalBills != null" >
+        total_bills,
+      </if>
+      <if test="openCount != null" >
+        open_count,
+      </if>
+      <if test="firstReceipt != null" >
+        first_receipt,
+      </if>
+      <if test="lastReceipt != null" >
+        last_receipt,
+      </if>
+      <if test="totalTax != null" >
+        total_tax,
+      </if>
+      <if test="orderQty != null" >
+        order_qty,
+      </if>
+      <if test="personQty != null" >
+        person_qty,
+      </if>
+      <if test="totalBalancePrice != null" >
+        total_balance_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantName != null" >
+        #{restaurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueId != null" >
+        #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueName != null" >
+        #{revenueName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDate != null" >
+        #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemSales != null" >
+        #{itemSales,jdbcType=DECIMAL},
+      </if>
+      <if test="itemSalesQty != null" >
+        #{itemSalesQty,jdbcType=INTEGER},
+      </if>
+      <if test="discountPer != null" >
+        #{discountPer,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPerQty != null" >
+        #{discountPerQty,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="discountQty != null" >
+        #{discountQty,jdbcType=INTEGER},
+      </if>
+      <if test="discountAmt != null" >
+        #{discountAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="focItem != null" >
+        #{focItem,jdbcType=DECIMAL},
+      </if>
+      <if test="focItemQty != null" >
+        #{focItemQty,jdbcType=INTEGER},
+      </if>
+      <if test="focBill != null" >
+        #{focBill,jdbcType=DECIMAL},
+      </if>
+      <if test="focBillQty != null" >
+        #{focBillQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalSales != null" >
+        #{totalSales,jdbcType=DECIMAL},
+      </if>
+      <if test="cash != null" >
+        #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="cashQty != null" >
+        #{cashQty,jdbcType=INTEGER},
+      </if>
+      <if test="nets != null" >
+        #{nets,jdbcType=DECIMAL},
+      </if>
+      <if test="netsQty != null" >
+        #{netsQty,jdbcType=INTEGER},
+      </if>
+      <if test="visa != null" >
+        #{visa,jdbcType=DECIMAL},
+      </if>
+      <if test="visaQty != null" >
+        #{visaQty,jdbcType=INTEGER},
+      </if>
+      <if test="mc != null" >
+        #{mc,jdbcType=DECIMAL},
+      </if>
+      <if test="mcQty != null" >
+        #{mcQty,jdbcType=INTEGER},
+      </if>
+      <if test="amex != null" >
+        #{amex,jdbcType=DECIMAL},
+      </if>
+      <if test="amexQty != null" >
+        #{amexQty,jdbcType=INTEGER},
+      </if>
+      <if test="jbl != null" >
+        #{jbl,jdbcType=DECIMAL},
+      </if>
+      <if test="jblQty != null" >
+        #{jblQty,jdbcType=INTEGER},
+      </if>
+      <if test="unionPay != null" >
+        #{unionPay,jdbcType=DECIMAL},
+      </if>
+      <if test="unionPayQty != null" >
+        #{unionPayQty,jdbcType=INTEGER},
+      </if>
+      <if test="diner != null" >
+        #{diner,jdbcType=DECIMAL},
+      </if>
+      <if test="dinerQty != null" >
+        #{dinerQty,jdbcType=INTEGER},
+      </if>
+      <if test="holdld != null" >
+        #{holdld,jdbcType=DECIMAL},
+      </if>
+      <if test="holdldQty != null" >
+        #{holdldQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalCard != null" >
+        #{totalCard,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCardQty != null" >
+        #{totalCardQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalCash != null" >
+        #{totalCash,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCashQty != null" >
+        #{totalCashQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalBillVoid != null" >
+        #{totalBillVoid,jdbcType=DECIMAL},
+      </if>
+      <if test="totalBillVoidQty != null" >
+        #{totalBillVoidQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalVoid != null" >
+        #{totalVoid,jdbcType=DECIMAL},
+      </if>
+      <if test="totalVoidQty != null" >
+        #{totalVoidQty,jdbcType=INTEGER},
+      </if>
+      <if test="nettSales != null" >
+        #{nettSales,jdbcType=DECIMAL},
+      </if>
+      <if test="totalBills != null" >
+        #{totalBills,jdbcType=INTEGER},
+      </if>
+      <if test="openCount != null" >
+        #{openCount,jdbcType=INTEGER},
+      </if>
+      <if test="firstReceipt != null" >
+        #{firstReceipt,jdbcType=INTEGER},
+      </if>
+      <if test="lastReceipt != null" >
+        #{lastReceipt,jdbcType=INTEGER},
+      </if>
+      <if test="totalTax != null" >
+        #{totalTax,jdbcType=DECIMAL},
+      </if>
+      <if test="orderQty != null" >
+        #{orderQty,jdbcType=INTEGER},
+      </if>
+      <if test="personQty != null" >
+        #{personQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalBalancePrice != null" >
+        #{totalBalancePrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.ReportDaySales" >
+    update report_day_sales
+    <set >
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantName != null" >
+        restaurant_name = #{restaurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueName != null" >
+        revenue_name = #{revenueName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDate != null" >
+        business_date = #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemSales != null" >
+        item_sales = #{itemSales,jdbcType=DECIMAL},
+      </if>
+      <if test="itemSalesQty != null" >
+        item_sales_qty = #{itemSalesQty,jdbcType=INTEGER},
+      </if>
+      <if test="discountPer != null" >
+        discount_per = #{discountPer,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPerQty != null" >
+        discount_per_qty = #{discountPerQty,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="discountQty != null" >
+        discount_qty = #{discountQty,jdbcType=INTEGER},
+      </if>
+      <if test="discountAmt != null" >
+        discount_amt = #{discountAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="focItem != null" >
+        foc_item = #{focItem,jdbcType=DECIMAL},
+      </if>
+      <if test="focItemQty != null" >
+        foc_item_qty = #{focItemQty,jdbcType=INTEGER},
+      </if>
+      <if test="focBill != null" >
+        foc_bill = #{focBill,jdbcType=DECIMAL},
+      </if>
+      <if test="focBillQty != null" >
+        foc_bill_qty = #{focBillQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalSales != null" >
+        total_sales = #{totalSales,jdbcType=DECIMAL},
+      </if>
+      <if test="cash != null" >
+        cash = #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="cashQty != null" >
+        cash_qty = #{cashQty,jdbcType=INTEGER},
+      </if>
+      <if test="nets != null" >
+        nets = #{nets,jdbcType=DECIMAL},
+      </if>
+      <if test="netsQty != null" >
+        nets_qty = #{netsQty,jdbcType=INTEGER},
+      </if>
+      <if test="visa != null" >
+        visa = #{visa,jdbcType=DECIMAL},
+      </if>
+      <if test="visaQty != null" >
+        visa_qty = #{visaQty,jdbcType=INTEGER},
+      </if>
+      <if test="mc != null" >
+        mc = #{mc,jdbcType=DECIMAL},
+      </if>
+      <if test="mcQty != null" >
+        mc_qty = #{mcQty,jdbcType=INTEGER},
+      </if>
+      <if test="amex != null" >
+        amex = #{amex,jdbcType=DECIMAL},
+      </if>
+      <if test="amexQty != null" >
+        amex_qty = #{amexQty,jdbcType=INTEGER},
+      </if>
+      <if test="jbl != null" >
+        jbl = #{jbl,jdbcType=DECIMAL},
+      </if>
+      <if test="jblQty != null" >
+        jbl_qty = #{jblQty,jdbcType=INTEGER},
+      </if>
+      <if test="unionPay != null" >
+        union_pay = #{unionPay,jdbcType=DECIMAL},
+      </if>
+      <if test="unionPayQty != null" >
+        union_pay_qty = #{unionPayQty,jdbcType=INTEGER},
+      </if>
+      <if test="diner != null" >
+        diner = #{diner,jdbcType=DECIMAL},
+      </if>
+      <if test="dinerQty != null" >
+        diner_qty = #{dinerQty,jdbcType=INTEGER},
+      </if>
+      <if test="holdld != null" >
+        holdld = #{holdld,jdbcType=DECIMAL},
+      </if>
+      <if test="holdldQty != null" >
+        holdld_qty = #{holdldQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalCard != null" >
+        total_card = #{totalCard,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCardQty != null" >
+        total_card_qty = #{totalCardQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalCash != null" >
+        total_cash = #{totalCash,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCashQty != null" >
+        total_cash_qty = #{totalCashQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalBillVoid != null" >
+        total_bill_void = #{totalBillVoid,jdbcType=DECIMAL},
+      </if>
+      <if test="totalBillVoidQty != null" >
+        total_bill_void_qty = #{totalBillVoidQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalVoid != null" >
+        total_void = #{totalVoid,jdbcType=DECIMAL},
+      </if>
+      <if test="totalVoidQty != null" >
+        total_void_qty = #{totalVoidQty,jdbcType=INTEGER},
+      </if>
+      <if test="nettSales != null" >
+        nett_sales = #{nettSales,jdbcType=DECIMAL},
+      </if>
+      <if test="totalBills != null" >
+        total_bills = #{totalBills,jdbcType=INTEGER},
+      </if>
+      <if test="openCount != null" >
+        open_count = #{openCount,jdbcType=INTEGER},
+      </if>
+      <if test="firstReceipt != null" >
+        first_receipt = #{firstReceipt,jdbcType=INTEGER},
+      </if>
+      <if test="lastReceipt != null" >
+        last_receipt = #{lastReceipt,jdbcType=INTEGER},
+      </if>
+      <if test="totalTax != null" >
+        total_tax = #{totalTax,jdbcType=DECIMAL},
+      </if>
+      <if test="orderQty != null" >
+        order_qty = #{orderQty,jdbcType=INTEGER},
+      </if>
+      <if test="personQty != null" >
+        person_qty = #{personQty,jdbcType=INTEGER},
+      </if>
+      <if test="totalBalancePrice != null" >
+        total_balance_price = #{totalBalancePrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

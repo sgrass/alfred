@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.HappyHourWeekMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.HappyHourWeek" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="happy_hour_id" property="happyHourId" jdbcType="INTEGER" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIME" />
+    <result column="end_time" property="endTime" jdbcType="TIME" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, happy_hour_id, week, start_time, end_time, is_active
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.HappyHourWeek" >
+    select
+    <include refid="Base_Column_List" />
+    from happy_hour_week
+    <where >
+      <if test="happyHourId != null" >
+        AND happy_hour_id = #{happyHourId,jdbcType=INTEGER}
+      </if>
+      <if test="week != null" >
+        AND week = #{week,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null" >
+        AND start_time = #{startTime,jdbcType=TIME}
+      </if>
+      <if test="endTime != null" >
+        AND end_time = #{endTime,jdbcType=TIME}
+      </if>
+      <if test="isActive != null" >
+        AND is_active = #{isActive,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  
+   <select id="selectWeekByRestaurantId" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+	select
+	a.id,a.happy_hour_id,a.`week`,a.start_time,a.end_time,a.is_active from
+	happy_hour_week a,happy_hour b where a.happy_hour_id=b.id and
+	b.restaurant_id=#{restaurantId,jdbcType=INTEGER} and a.is_active=#{isActive,jdbcType=INTEGER}
+   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from happy_hour_week
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from happy_hour_week
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByHappyHourId" parameterType="java.lang.Integer" >
+    delete from happy_hour_week
+    where happy_hour_id = #{happyHourId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.HappyHourWeek" >
+    insert into happy_hour_week
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="happyHourId != null" >
+        happy_hour_id,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="happyHourId != null" >
+        #{happyHourId,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIME},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIME},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.HappyHourWeek" >
+    update happy_hour_week
+    <set >
+      <if test="happyHourId != null" >
+        happy_hour_id = #{happyHourId,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIME},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIME},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

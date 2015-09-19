@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.Permission" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="permiss_id" property="permissId" jdbcType="INTEGER" />
+    <result column="permiss_name" property="permissName" jdbcType="VARCHAR" />
+    <result column="permiss_desc" property="permissDesc" jdbcType="VARCHAR" />
+    <result column="permiss_rule" property="permissRule" jdbcType="VARCHAR" />
+    <result column="perm_model" property="permModel" jdbcType="VARCHAR" />
+    <result column="permis_level" property="permisLevel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, permiss_id, permiss_name, permiss_desc, permiss_rule, perm_model, permis_level
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.Permission" >
+    select
+    <include refid="Base_Column_List" />
+    from permission
+    <where >
+      <if test="permissId != null" >
+        AND permiss_id = #{permissId,jdbcType=INTEGER}
+      </if>
+      <if test="permissName != null" >
+        AND permiss_name = #{permissName,jdbcType=VARCHAR}
+      </if>
+      <if test="permissDesc != null" >
+        AND permiss_desc = #{permissDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="permissRule != null" >
+        AND permiss_rule = #{permissRule,jdbcType=VARCHAR}
+      </if>
+      <if test="permModel != null" >
+        AND perm_model = #{permModel,jdbcType=VARCHAR}
+      </if>
+      <if test="permisLevel != null" >
+        AND permis_level = #{permisLevel,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.Permission" >
+    insert into permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="permissId != null" >
+        permiss_id,
+      </if>
+      <if test="permissName != null" >
+        permiss_name,
+      </if>
+      <if test="permissDesc != null" >
+        permiss_desc,
+      </if>
+      <if test="permissRule != null" >
+        permiss_rule,
+      </if>
+      <if test="permModel != null" >
+        perm_model,
+      </if>
+      <if test="permisLevel != null" >
+        permis_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="permissId != null" >
+        #{permissId,jdbcType=INTEGER},
+      </if>
+      <if test="permissName != null" >
+        #{permissName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissDesc != null" >
+        #{permissDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="permissRule != null" >
+        #{permissRule,jdbcType=VARCHAR},
+      </if>
+      <if test="permModel != null" >
+        #{permModel,jdbcType=VARCHAR},
+      </if>
+      <if test="permisLevel != null" >
+        #{permisLevel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.Permission" >
+    update permission
+    <set >
+      <if test="permissId != null" >
+        permiss_id = #{permissId,jdbcType=INTEGER},
+      </if>
+      <if test="permissName != null" >
+        permiss_name = #{permissName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissDesc != null" >
+        permiss_desc = #{permissDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="permissRule != null" >
+        permiss_rule = #{permissRule,jdbcType=VARCHAR},
+      </if>
+      <if test="permModel != null" >
+        perm_model = #{permModel,jdbcType=VARCHAR},
+      </if>
+      <if test="permisLevel != null" >
+        permis_level = #{permisLevel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

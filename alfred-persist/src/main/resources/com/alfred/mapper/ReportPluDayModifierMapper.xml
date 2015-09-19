@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ReportPluDayModifierMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.ReportPluDayModifier" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="report_no" property="reportNo" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="restaurant_name" property="restaurantName" jdbcType="VARCHAR" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="revenue_name" property="revenueName" jdbcType="VARCHAR" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="modifier_category_id" property="modifierCategoryId" jdbcType="INTEGER" />
+    <result column="modifier_category_name" property="modifierCategoryName" jdbcType="VARCHAR" />
+    <result column="modifier_id" property="modifierId" jdbcType="INTEGER" />
+    <result column="modifier_name" property="modifierName" jdbcType="VARCHAR" />
+    <result column="modifier_price" property="modifierPrice" jdbcType="DECIMAL" />
+    <result column="modifier_count" property="modifierCount" jdbcType="INTEGER" />
+    <result column="bill_void_price" property="billVoidPrice" jdbcType="DECIMAL" />
+    <result column="bill_void_count" property="billVoidCount" jdbcType="INTEGER" />
+    <result column="void_modifier_price" property="voidModifierPrice" jdbcType="DECIMAL" />
+    <result column="void_modifier_count" property="voidModifierCount" jdbcType="INTEGER" />
+    <result column="boh_modifier_price" property="bohModifierPrice" jdbcType="DECIMAL" />
+    <result column="boh_modifier_count" property="bohModifierCount" jdbcType="INTEGER" />
+    <result column="foc_modifier_price" property="focModifierPrice" jdbcType="DECIMAL" />
+    <result column="foc_modifier_count" property="focModifierCount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, report_no, restaurant_id, restaurant_name, revenue_id, revenue_name, business_date, 
+    modifier_category_id, modifier_category_name, modifier_id, modifier_name, modifier_price, 
+    modifier_count, bill_void_price, bill_void_count, void_modifier_price, void_modifier_count, 
+    boh_modifier_price, boh_modifier_count, foc_modifier_price, foc_modifier_count
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.ReportPluDayModifier" >
+    select
+    <include refid="Base_Column_List" />
+    from report_plu_day_modifier
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="modifierCategoryId != null" >
+        AND modifier_category_id = #{modifierCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="modifierCategoryName != null" >
+        AND modifier_category_name = #{modifierCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="modifierId != null" >
+        AND modifier_id = #{modifierId,jdbcType=INTEGER}
+      </if>
+      <if test="modifierName != null" >
+        AND modifier_name = #{modifierName,jdbcType=VARCHAR}
+      </if>
+      <if test="modifierPrice != null" >
+        AND modifier_price = #{modifierPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="modifierCount != null" >
+        AND modifier_count = #{modifierCount,jdbcType=INTEGER}
+      </if>
+      <if test="billVoidPrice != null" >
+        AND bill_void_price = #{billVoidPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="billVoidCount != null" >
+        AND bill_void_count = #{billVoidCount,jdbcType=INTEGER}
+      </if>
+      <if test="voidModifierPrice != null" >
+        AND void_modifier_price = #{voidModifierPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="voidModifierCount != null" >
+        AND void_modifier_count = #{voidModifierCount,jdbcType=INTEGER}
+      </if>
+      <if test="bohModifierPrice != null" >
+        AND boh_modifier_price = #{bohModifierPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="bohModifierCount != null" >
+        AND boh_modifier_count = #{bohModifierCount,jdbcType=INTEGER}
+      </if>
+      <if test="focModifierPrice != null" >
+        AND foc_modifier_price = #{focModifierPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="focModifierCount != null" >
+        AND foc_modifier_count = #{focModifierCount,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_plu_day_modifier
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_plu_day_modifier
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.ReportPluDayModifier" >
+    insert into report_plu_day_modifier
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reportNo != null" >
+        report_no,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="restaurantName != null" >
+        restaurant_name,
+      </if>
+      <if test="revenueId != null" >
+        revenue_id,
+      </if>
+      <if test="revenueName != null" >
+        revenue_name,
+      </if>
+      <if test="businessDate != null" >
+        business_date,
+      </if>
+      <if test="modifierCategoryId != null" >
+        modifier_category_id,
+      </if>
+      <if test="modifierCategoryName != null" >
+        modifier_category_name,
+      </if>
+      <if test="modifierId != null" >
+        modifier_id,
+      </if>
+      <if test="modifierName != null" >
+        modifier_name,
+      </if>
+      <if test="modifierPrice != null" >
+        modifier_price,
+      </if>
+      <if test="modifierCount != null" >
+        modifier_count,
+      </if>
+      <if test="billVoidPrice != null" >
+        bill_void_price,
+      </if>
+      <if test="billVoidCount != null" >
+        bill_void_count,
+      </if>
+      <if test="voidModifierPrice != null" >
+        void_modifier_price,
+      </if>
+      <if test="voidModifierCount != null" >
+        void_modifier_count,
+      </if>
+      <if test="bohModifierPrice != null" >
+        boh_modifier_price,
+      </if>
+      <if test="bohModifierCount != null" >
+        boh_modifier_count,
+      </if>
+      <if test="focModifierPrice != null" >
+        foc_modifier_price,
+      </if>
+      <if test="focModifierCount != null" >
+        foc_modifier_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reportNo != null" >
+        #{reportNo,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantName != null" >
+        #{restaurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueId != null" >
+        #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueName != null" >
+        #{revenueName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDate != null" >
+        #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifierCategoryId != null" >
+        #{modifierCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierCategoryName != null" >
+        #{modifierCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierId != null" >
+        #{modifierId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierName != null" >
+        #{modifierName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierPrice != null" >
+        #{modifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="modifierCount != null" >
+        #{modifierCount,jdbcType=INTEGER},
+      </if>
+      <if test="billVoidPrice != null" >
+        #{billVoidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="billVoidCount != null" >
+        #{billVoidCount,jdbcType=INTEGER},
+      </if>
+      <if test="voidModifierPrice != null" >
+        #{voidModifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="voidModifierCount != null" >
+        #{voidModifierCount,jdbcType=INTEGER},
+      </if>
+      <if test="bohModifierPrice != null" >
+        #{bohModifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="bohModifierCount != null" >
+        #{bohModifierCount,jdbcType=INTEGER},
+      </if>
+      <if test="focModifierPrice != null" >
+        #{focModifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="focModifierCount != null" >
+        #{focModifierCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.ReportPluDayModifier" >
+    update report_plu_day_modifier
+    <set >
+      <if test="reportNo != null" >
+        report_no = #{reportNo,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantName != null" >
+        restaurant_name = #{restaurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueName != null" >
+        revenue_name = #{revenueName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDate != null" >
+        business_date = #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifierCategoryId != null" >
+        modifier_category_id = #{modifierCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierCategoryName != null" >
+        modifier_category_name = #{modifierCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierId != null" >
+        modifier_id = #{modifierId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierName != null" >
+        modifier_name = #{modifierName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierPrice != null" >
+        modifier_price = #{modifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="modifierCount != null" >
+        modifier_count = #{modifierCount,jdbcType=INTEGER},
+      </if>
+      <if test="billVoidPrice != null" >
+        bill_void_price = #{billVoidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="billVoidCount != null" >
+        bill_void_count = #{billVoidCount,jdbcType=INTEGER},
+      </if>
+      <if test="voidModifierPrice != null" >
+        void_modifier_price = #{voidModifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="voidModifierCount != null" >
+        void_modifier_count = #{voidModifierCount,jdbcType=INTEGER},
+      </if>
+      <if test="bohModifierPrice != null" >
+        boh_modifier_price = #{bohModifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="bohModifierCount != null" >
+        boh_modifier_count = #{bohModifierCount,jdbcType=INTEGER},
+      </if>
+      <if test="focModifierPrice != null" >
+        foc_modifier_price = #{focModifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="focModifierCount != null" >
+        foc_modifier_count = #{focModifierCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

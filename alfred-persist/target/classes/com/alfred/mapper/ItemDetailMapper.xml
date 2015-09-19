@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ItemDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.ItemDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="item_template_id" property="itemTemplateId" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item_desc" property="itemDesc" jdbcType="VARCHAR" />
+    <result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="item_type" property="itemType" jdbcType="INTEGER" />
+    <result column="printer_id" property="printerId" jdbcType="INTEGER" />
+    <result column="is_modifier" property="isModifier" jdbcType="INTEGER" />
+    <result column="item_main_category_id" property="itemMainCategoryId" jdbcType="INTEGER" />
+    <result column="item_category_id" property="itemCategoryId" jdbcType="INTEGER" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="tax_category_id" property="taxCategoryId" jdbcType="INTEGER" />
+    <result column="is_pack" property="isPack" jdbcType="INTEGER" />
+    <result column="is_takeout" property="isTakeout" jdbcType="INTEGER" />
+    <result column="happy_hours_id" property="happyHoursId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+	<resultMap id="ItemDetailTreeResultMap" type="com.alfred.vo.MainMuenTree">
+		<id column="m_id" property="id" jdbcType="VARCHAR" />
+		<result column="m_label" property="label" jdbcType="VARCHAR" />
+		<collection property="children" ofType="com.alfred.vo.ItemTree" column="i_id">
+			<id column="i_id" property="id" jdbcType="VARCHAR" />
+			<result column="i_label" property="label" jdbcType="VARCHAR" />
+			<collection property="children" ofType="com.alfred.vo.ItemDetailTree" column="d_id">
+				<id column="d_id" property="id" jdbcType="INTEGER" />
+				<result column="d_label" property="label" jdbcType="VARCHAR" />
+			</collection>
+		</collection>
+	</resultMap>
+	
+	
+<resultMap id="SetMealResultMap" type="com.alfred.vo.ItemSetMealVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="item_template_id" property="itemTemplateId" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item_desc" property="itemDesc" jdbcType="VARCHAR" />
+    <result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="item_type" property="itemType" jdbcType="INTEGER" />
+    <result column="printer_id" property="printerId" jdbcType="INTEGER" />
+    <result column="is_modifier" property="isModifier" jdbcType="INTEGER" />
+    <result column="item_main_category_id" property="itemMainCategoryId" jdbcType="INTEGER" />
+    <result column="item_category_id" property="itemCategoryId" jdbcType="INTEGER" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="tax_category_id" property="taxCategoryId" jdbcType="INTEGER" />
+    <result column="is_pack" property="isPack" jdbcType="INTEGER" />
+    <result column="is_takeout" property="isTakeout" jdbcType="INTEGER" />
+    <result column="happy_hours_id" property="happyHoursId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <collection property="itemSetMealList" ofType="com.alfred.model.ItemSetMeal" column="m_id">
+    <id column="m_id" property="id" jdbcType="INTEGER" />
+    <result column="m_item_id" property="itemId" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
+	
+   
+  <select id="selectItemDetailTree" resultMap="ItemDetailTreeResultMap"  parameterType="java.util.HashMap" >
+		<![CDATA[ 
+			SELECT imc.id as m_id,imc.main_category_name as m_label ,ic.id as i_id,ic.item_category_name as i_label,i.id as d_id,i.item_name as d_label 
+			FROM item_main_category imc ,
+			item_category ic ,item_detail i where ic.id=i.item_category_id and imc.id=ic.item_main_category_id
+			and i.item_name is not null  and i.revenue_id is null and i.is_active!=-1
+		]]>
+		<if test="restaurantId != null" >
+	  	and   i.restaurant_id=#{restaurantId}
+	  </if>
+	</select>
+  
+	<select id="selectItemUpdateDetailTree" resultMap="ItemDetailTreeResultMap"   parameterType="java.util.HashMap" >
+		<![CDATA[  
+			SELECT imc.id as m_id,imc.main_category_name as m_label ,ic.id as i_id,ic.item_category_name as i_label,i.item_template_id as d_id,i.item_name as d_label 
+			FROM item_main_category imc ,
+			item_category ic ,item_detail i where ic.id=i.item_category_id and imc.id=ic.item_main_category_id
+			and i.item_name is not null and i.is_active!=-1 	
+		]]>
+    <if test="revenueId != null" >
+    	and   i.revenue_id=#{revenueId}
+    </if>
+    <if test="restaurantId != null" >
+      and   i.restaurant_id=#{restaurantId}
+    </if>
+  </select>
+
+
+	<resultMap id="ItemNameResultMap" type="com.alfred.vo.ItemDetailVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="item_main_category_id" property="itemMainCategoryId" jdbcType="INTEGER" />
+    <result column="item_main_category_name" property="itemMainCategoryName" jdbcType="VARCHAR" />
+    <result column="item_category_id" property="itemCategoryId" jdbcType="INTEGER" />
+    <result column="item_category_name" property="itemCategoryName" jdbcType="VARCHAR" />
+  </resultMap>
+	<select id="selectItemName" resultMap="ItemNameResultMap" parameterType="java.lang.Integer">
+		select 
+		i.id, i.item_main_category_id, i.item_category_id, i.item_name, 
+		(SELECT main_category_name FROM item_main_category WHERE id=i.item_main_category_id) as item_main_category_name,
+		(SELECT item_category_name FROM item_category WHERE id=i.item_category_id) as item_category_name 
+		from item_detail i where i.is_active=1 AND i.item_type=0 AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+	</select>
+
+  <sql id="Base_Column_List" >
+    id, item_template_id, restaurant_id, revenue_id, item_name, item_desc, item_code, img_url, price, item_type, 
+    printer_id, is_modifier, item_main_category_id, item_category_id, is_active, tax_category_id, 
+    is_pack, is_takeout, happy_hours_id, user_id, create_time, update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.ItemDetail" >
+    select
+    <include refid="Base_Column_List" />
+    from item_detail
+    <where >
+      <if test="itemTemplateId != null" >
+        AND item_template_id = #{itemTemplateId,jdbcType=INTEGER}
+      </if>
+      <if test="id != null" >
+        AND id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDesc != null" >
+        AND item_desc = #{itemDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCode != null" >
+        AND item_code = #{itemCode,jdbcType=VARCHAR}
+      </if>
+      <if test="imgUrl != null" >
+        AND img_url = #{imgUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null" >
+        AND price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="itemType != null" >
+        AND item_type = #{itemType,jdbcType=INTEGER}
+      </if>
+      <if test="printerId != null" >
+        AND printer_id = #{printerId,jdbcType=INTEGER}
+      </if>
+      <if test="isModifier != null" >
+        AND is_modifier = #{isModifier,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null" >
+      	AND is_active >= #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="taxCategoryId != null" >
+        AND tax_category_id = #{taxCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isPack != null" >
+        AND is_pack = #{isPack,jdbcType=INTEGER}
+      </if>
+      <if test="isTakeout != null" >
+        AND is_takeout = #{isTakeout,jdbcType=INTEGER}
+      </if>
+      <if test="happyHoursId != null" >
+        AND happy_hours_id = #{happyHoursId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectByRevenueId" resultMap="BaseResultMap" parameterType="com.alfred.model.ItemDetail" >
+    select
+    <include refid="Base_Column_List" />
+    from item_detail
+    WHERE  restaurant_id = #{restaurantId,jdbcType=INTEGER} AND is_active = #{isActive,jdbcType=INTEGER} 
+    AND ((item_type=1 AND revenue_id=#{revenueId,jdbcType=INTEGER}) OR item_type=0 OR item_type=10)
+  </select>
+  
+  <select id="selectCountByParam" resultType="java.lang.Integer" parameterType="com.alfred.model.ItemDetail" >
+    select COUNT(*) from item_detail
+    <where >
+      <if test="itemTemplateId != null" >
+        AND item_template_id = #{itemTemplateId,jdbcType=INTEGER}
+      </if>
+      <if test="id != null" >
+        AND id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDesc != null" >
+        AND item_desc = #{itemDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCode != null" >
+        AND item_code = #{itemCode,jdbcType=VARCHAR}
+      </if>
+      <if test="imgUrl != null" >
+        AND img_url = #{imgUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null" >
+        AND price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="itemType != null" >
+        AND item_type = #{itemType,jdbcType=INTEGER}
+      </if>
+      <if test="printerId != null" >
+        AND printer_id = #{printerId,jdbcType=INTEGER}
+      </if>
+      <if test="isModifier != null" >
+        AND is_modifier = #{isModifier,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null" >
+      	AND is_active >= #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="taxCategoryId != null" >
+        AND tax_category_id = #{taxCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isPack != null" >
+        AND is_pack = #{isPack,jdbcType=INTEGER}
+      </if>
+      <if test="isTakeout != null" >
+        AND is_takeout = #{isTakeout,jdbcType=INTEGER}
+      </if>
+      <if test="happyHoursId != null" >
+        AND happy_hours_id = #{happyHoursId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectPageByParam" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from item_detail
+    <where >
+      <if test="itemTemplateId != null" >
+        AND item_template_id = #{itemTemplateId,jdbcType=INTEGER}
+      </if>
+      <if test="id != null" >
+        AND id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDesc != null" >
+        AND item_desc = #{itemDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCode != null" >
+        AND item_code = #{itemCode,jdbcType=VARCHAR}
+      </if>
+      <if test="imgUrl != null" >
+        AND img_url = #{imgUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null" >
+        AND price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="itemType != null" >
+        AND item_type = #{itemType,jdbcType=INTEGER}
+      </if>
+      <if test="printerId != null" >
+        AND printer_id = #{printerId,jdbcType=INTEGER}
+      </if>
+      <if test="isModifier != null" >
+        AND is_modifier = #{isModifier,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null" >
+      	AND is_active >= #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="taxCategoryId != null" >
+        AND tax_category_id = #{taxCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isPack != null" >
+        AND is_pack = #{isPack,jdbcType=INTEGER}
+      </if>
+      <if test="isTakeout != null" >
+        AND is_takeout = #{isTakeout,jdbcType=INTEGER}
+      </if>
+      <if test="happyHoursId != null" >
+        AND happy_hours_id = #{happyHoursId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    LIMIT #{startRow},#{perPageSize}
+  </select>
+  
+    <select id="selectSetMealPageByParam" resultMap="SetMealResultMap" parameterType="java.util.HashMap" >
+    SELECT  t.id, t.item_template_id, t.restaurant_id, t.revenue_id, t.item_name, t.item_desc, t.item_code, t.img_url, t.price, t.item_type, 
+    t.printer_id, t.is_modifier, t.item_main_category_id, t.item_category_id, t.is_active, t.tax_category_id, 
+    t.is_pack, t.is_takeout, t.happy_hours_id, t.user_id, t.create_time, t.update_time,m.id m_id,m.item_id m_item_id
+    FROM  item_detail t ,item_set_meal m 
+    <where >
+       and t.id=m.set_meal_id
+      <if test="itemTemplateId != null" >
+        AND t.item_template_id = #{itemTemplateId,jdbcType=INTEGER}
+      </if>
+      <if test="id != null" >
+        AND  t.id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND  t.restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND  t.revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND  t.item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDesc != null" >
+        AND  t.item_desc = #{itemDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCode != null" >
+        AND  t.item_code = #{itemCode,jdbcType=VARCHAR}
+      </if>
+      <if test="imgUrl != null" >
+        AND  t.img_url = #{imgUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null" >
+        AND  t.price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="itemType != null" >
+        AND  t.item_type = #{itemType,jdbcType=INTEGER}
+      </if>
+      <if test="printerId != null" >
+        AND  t.printer_id = #{printerId,jdbcType=INTEGER}
+      </if>
+      <if test="isModifier != null" >
+        AND  t.is_modifier = #{isModifier,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND  t.item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND  t.item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null" >
+      	AND  t.is_active >= #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="taxCategoryId != null" >
+        AND  t.tax_category_id = #{taxCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isPack != null" >
+        AND  t.is_pack = #{isPack,jdbcType=INTEGER}
+      </if>
+      <if test="isTakeout != null" >
+        AND  t.is_takeout = #{isTakeout,jdbcType=INTEGER}
+      </if>
+      <if test="happyHoursId != null" >
+        AND  t.happy_hours_id = #{happyHoursId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND  t.user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND  t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    LIMIT #{startRow},#{perPageSize}
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from item_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from item_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id"  parameterType="com.alfred.model.ItemDetail" >
+    insert into item_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+       <if test="itemTemplateId != null" >
+         item_template_id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="revenueId != null" >
+        revenue_id,
+      </if>
+      <if test="itemName != null" >
+        item_name,
+      </if>
+      <if test="itemDesc != null" >
+        item_desc,
+      </if>
+      <if test="itemCode != null" >
+        item_code,
+      </if>
+      
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="itemType != null" >
+        item_type,
+      </if>
+      <if test="printerId != null" >
+        printer_id,
+      </if>
+      <if test="isModifier != null" >
+        is_modifier,
+      </if>
+      <if test="itemMainCategoryId != null" >
+        item_main_category_id,
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+      <if test="taxCategoryId != null" >
+        tax_category_id,
+      </if>
+      <if test="isPack != null" >
+        is_pack,
+      </if>
+      <if test="isTakeout != null" >
+        is_takeout,
+      </if>
+      <if test="happyHoursId != null" >
+        happy_hours_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+       <if test="itemTemplateId != null" >
+        #{itemTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueId != null" >
+        #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDesc != null" >
+        #{itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCode != null" >
+        #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="itemType != null" >
+        #{itemType,jdbcType=INTEGER},
+      </if>
+      <if test="printerId != null" >
+        #{printerId,jdbcType=INTEGER},
+      </if>
+      <if test="isModifier != null" >
+        #{isModifier,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryId != null" >
+        #{itemMainCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryId != null" >
+        #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="taxCategoryId != null" >
+        #{taxCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="isPack != null" >
+        #{isPack,jdbcType=INTEGER},
+      </if>
+      <if test="isTakeout != null" >
+        #{isTakeout,jdbcType=INTEGER},
+      </if>
+      <if test="happyHoursId != null" >
+        #{happyHoursId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  
+ <insert id="insertRevenueCenterMenu" useGeneratedKeys="true" keyProperty="id" keyColumn="id"  parameterType="java.lang.Integer">
+INSERT INTO item_detail(restaurant_id,
+  item_template_id,
+  item_code,
+  img_url,
+  price,
+  revenue_id,
+  item_name,
+  item_desc ,
+  item_type,
+  printer_id,
+  is_modifier,
+  item_main_category_id,
+  item_category_id,
+  is_active,
+  tax_category_id,
+  is_pack,
+  is_takeout,
+  happy_hours_id,
+  user_id,
+  create_time,
+  update_time )
+     SELECT restaurant_id,
+  item_template_id,
+  item_code,
+  img_url,
+  price,
+  revenue_id,
+  item_name,
+  item_desc ,
+  item_type,
+  printer_id,
+  is_modifier,
+  item_main_category_id,
+  item_category_id,
+  is_active,
+  tax_category_id,
+  is_pack,
+  is_takeout,
+  happy_hours_id,
+  user_id,
+  create_time,
+  update_time 
+ FROM item_detail 
+   WHERE id = #{id,jdbcType=INTEGER}
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.ItemDetail" >
+    update item_detail
+    <set >
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDesc != null" >
+        item_desc = #{itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCode != null" >
+        item_code = #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="itemType != null" >
+        item_type = #{itemType,jdbcType=INTEGER},
+      </if>
+      <if test="printerId != null" >
+        printer_id = #{printerId,jdbcType=INTEGER},
+      </if>
+      <if test="isModifier != null" >
+        is_modifier = #{isModifier,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryId != null" >
+        item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id = #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="taxCategoryId != null" >
+        tax_category_id = #{taxCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="isPack != null" >
+        is_pack = #{isPack,jdbcType=INTEGER},
+      </if>
+      <if test="isTakeout != null" >
+        is_takeout = #{isTakeout,jdbcType=INTEGER},
+      </if>
+      <if test="happyHoursId != null" >
+        happy_hours_id = #{happyHoursId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByRevenueCenterId" parameterType="com.alfred.model.ItemDetail" >
+    update item_detail
+    <set >
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+    </set>
+      where item_template_id = #{itemTemplateId,jdbcType=INTEGER}
+      and
+      revenue_id = #{revenueId,jdbcType=INTEGER}
+      and  restaurant_id = #{restaurantId,jdbcType=INTEGER}
+  </update> 
+  
+  
+  <update id="updateByMainCateId" parameterType="com.alfred.model.ItemDetail" >
+    update item_detail
+    <set >
+    	<if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="printerId != null" >
+        printer_id = #{printerId,jdbcType=INTEGER},
+      </if>
+    </set>
+      where restaurant_id = #{restaurantId,jdbcType=INTEGER} AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+  </update> 
+  
+  <update id="updateBySubCateId" parameterType="com.alfred.model.ItemDetail" >
+    update item_detail
+    <set >
+    	<if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="printerId != null" >
+        printer_id = #{printerId,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+    </set>
+    where restaurant_id = #{restaurantId,jdbcType=INTEGER} AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByItemTemplateId" parameterType="com.alfred.model.ItemDetail" >
+    update item_detail
+    <set >
+    	<if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+    </set>
+    where restaurant_id = #{restaurantId,jdbcType=INTEGER} AND item_template_id = #{itemTemplateId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateGroupId" parameterType="com.alfred.model.ItemDetail" >
+    update item_detail
+    <set >
+      <if test="printerId != null" >
+        printer_id =null,
+      </if>
+       <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="revenueId != null" >
+        revenue_id = null,
+      </if>
+      
+        <if test="taxCategoryId != null" >
+        tax_category_id = null,
+      </if>
+    </set>
+      <where>
+      <if test="restaurantId != null" >
+       and  restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+        <if test="printerId != null" >
+       and  printer_id = #{printerId,jdbcType=INTEGER}
+      </if>
+      
+       <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      
+       <if test="taxCategoryId != null" >
+       and tax_category_id = #{taxCategoryId,jdbcType=INTEGER}
+      </if>
+      
+      </where>
+  </update>
+  
+  
+  
+   
+  
+  
+</mapper>

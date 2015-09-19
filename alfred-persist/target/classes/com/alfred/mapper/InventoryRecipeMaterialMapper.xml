@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.InventoryRecipeMaterialMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.InventoryRecipeMaterial" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="item_main_category_id" property="itemMainCategoryId" jdbcType="INTEGER" />
+    <result column="item_category_id" property="itemCategoryId" jdbcType="INTEGER" />
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="modifier_id" property="modifierId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="material_id" property="materialId" jdbcType="INTEGER" />
+    <result column="material_name" property="materialName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="use_qty" property="useQty" jdbcType="DECIMAL" />
+    <result column="unit_of_measurement" property="unitOfMeasurement" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, restaurant_id, item_main_category_id, item_category_id, item_id, modifier_id, 
+    type, material_id, material_name, status, use_qty, unit_of_measurement
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.InventoryRecipeMaterial" >
+    select
+    <include refid="Base_Column_List" />
+    from inventory_recipe_material
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemId != null" >
+        AND item_id = #{itemId,jdbcType=INTEGER}
+      </if>
+      <if test="modifierId != null" >
+        AND modifier_id = #{modifierId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        AND type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="materialId != null" >
+        AND material_id = #{materialId,jdbcType=INTEGER}
+      </if>
+      <if test="materialName != null" >
+        AND material_name = #{materialName,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="useQty != null" >
+        AND use_qty = #{useQty,jdbcType=DECIMAL}
+      </if>
+      <if test="unitOfMeasurement != null" >
+        AND unit_of_measurement = #{unitOfMeasurement,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from inventory_recipe_material
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="queryUseredMaterial" resultType="java.lang.Integer" parameterType="com.alfred.model.InventoryRecipeMaterial">
+		SELECT COUNT(*) FROM inventory_recipe_material
+		<where>
+			<if test="restaurantId != null">
+				AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="materialId != null">
+				AND material_id = #{materialId,jdbcType=INTEGER}
+			</if>
+		</where>
+
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from inventory_recipe_material
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteByItemId" parameterType="com.alfred.model.InventoryRecipeMaterial" >
+    delete from inventory_recipe_material
+    where item_id = #{itemId,jdbcType=INTEGER} AND restaurant_id = #{restaurantId,jdbcType=INTEGER} AND status = 1
+  </delete>
+  
+  <delete id="deleteByModifierId" parameterType="com.alfred.model.InventoryRecipeMaterial" >
+    delete from inventory_recipe_material
+    where modifier_id = #{modifierId,jdbcType=INTEGER} AND restaurant_id = #{restaurantId,jdbcType=INTEGER} AND status = 1
+  </delete>
+  
+  <insert id="insert" parameterType="com.alfred.model.InventoryRecipeMaterial" >
+    insert into inventory_recipe_material
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="itemMainCategoryId != null" >
+        item_main_category_id,
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="modifierId != null" >
+        modifier_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="materialId != null" >
+        material_id,
+      </if>
+      <if test="materialName != null" >
+        material_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="useQty != null" >
+        use_qty,
+      </if>
+      <if test="unitOfMeasurement != null" >
+        unit_of_measurement,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryId != null" >
+        #{itemMainCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryId != null" >
+        #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierId != null" >
+        #{modifierId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="materialId != null" >
+        #{materialId,jdbcType=INTEGER},
+      </if>
+      <if test="materialName != null" >
+        #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="useQty != null" >
+        #{useQty,jdbcType=DECIMAL},
+      </if>
+      <if test="unitOfMeasurement != null" >
+        #{unitOfMeasurement,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.InventoryRecipeMaterial" >
+    update inventory_recipe_material
+    <set >
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryId != null" >
+        item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id = #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="modifierId != null" >
+        modifier_id = #{modifierId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="materialId != null" >
+        material_id = #{materialId,jdbcType=INTEGER},
+      </if>
+      <if test="materialName != null" >
+        material_name = #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="useQty != null" >
+        use_qty = #{useQty,jdbcType=DECIMAL},
+      </if>
+      <if test="unitOfMeasurement != null" >
+        unit_of_measurement = #{unitOfMeasurement,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

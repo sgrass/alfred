@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ItemHappyHourMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.ItemHappyHour" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="happy_hour_id" property="happyHourId" jdbcType="INTEGER" />
+    <result column="item_main_category_id" property="itemMainCategoryId" jdbcType="INTEGER" />
+    <result column="item_category_id" property="itemCategoryId" jdbcType="INTEGER" />
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
+    <result column="discount_rate" property="discountRate" jdbcType="DECIMAL" />
+    <result column="free_num" property="freeNum" jdbcType="INTEGER" />
+    <result column="free_item_id" property="freeItemId" jdbcType="INTEGER" />
+    <result column="item_main_category_name" property="itemMainCategoryName" jdbcType="VARCHAR" />
+    <result column="item_category_name" property="itemCategoryName" jdbcType="VARCHAR" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="free_item_name" property="freeItemName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, happy_hour_id, item_main_category_id, item_category_id, item_id, type, discount_price, 
+    discount_rate, free_num, free_item_id, item_main_category_name, item_category_name, item_name, free_item_name
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.ItemHappyHour" >
+    select
+    <include refid="Base_Column_List" />
+    from item_happy_hour
+    <where >
+      <if test="happyHourId != null" >
+        AND happy_hour_id = #{happyHourId,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemId != null" >
+        AND item_id = #{itemId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        AND type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="discountPrice != null" >
+        AND discount_price = #{discountPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="discountRate != null" >
+        AND discount_rate = #{discountRate,jdbcType=DECIMAL}
+      </if>
+      <if test="freeNum != null" >
+        AND free_num = #{freeNum,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  
+	<select id="selectByRestaurantId" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+		select
+		a.id,a.happy_hour_id,a.item_main_category_id,a.item_category_id,a.item_id,a.type,a.discount_price,a.discount_rate,
+		a.free_num, a.free_item_id, a.item_main_category_name,a.item_category_name,a.item_name, a.free_item_name
+		from item_happy_hour a ,happy_hour b where a.happy_hour_id=b.id
+		and b.restaurant_id=#{restaurantId,jdbcType=INTEGER}
+	</select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from item_happy_hour
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from item_happy_hour
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.ItemHappyHour" >
+    insert into item_happy_hour
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="happyHourId != null" >
+        happy_hour_id,
+      </if>
+      <if test="itemMainCategoryId != null" >
+        item_main_category_id,
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="discountPrice != null" >
+        discount_price,
+      </if>
+      <if test="discountRate != null" >
+        discount_rate,
+      </if>
+      <if test="freeNum != null" >
+        free_num,
+      </if>
+      <if test="freeItemId != null" >
+        free_item_id,
+      </if>
+      <if test="itemMainCategoryName != null" >
+        item_main_category_name,
+      </if>
+      <if test="itemCategoryName != null" >
+        item_category_name,
+      </if>
+      <if test="itemName != null" >
+        item_name,
+      </if>
+      <if test="freeItemName != null" >
+        free_item_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="happyHourId != null" >
+        #{happyHourId,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryId != null" >
+        #{itemMainCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryId != null" >
+        #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="discountPrice != null" >
+        #{discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null" >
+        #{discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="freeNum != null" >
+        #{freeNum,jdbcType=INTEGER},
+      </if>
+      <if test="freeItemId != null" >
+        #{freeItemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryName != null" >
+        #{itemMainCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCategoryName != null" >
+        #{itemCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="freeItemName != null" >
+        #{freeItemName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.ItemHappyHour" >
+    update item_happy_hour
+    <set >
+      <if test="happyHourId != null" >
+        happy_hour_id = #{happyHourId,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryId != null" >
+        item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id = #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="discountPrice != null" >
+        discount_price = #{discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null" >
+        discount_rate = #{discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="freeNum != null" >
+        free_num = #{freeNum,jdbcType=INTEGER},
+      </if>
+      <if test="freeItemId != null" >
+        free_item_id = #{freeItemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryName != null" >
+        item_main_category_name = #{itemMainCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCategoryName != null" >
+        item_category_name = #{itemCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null" >
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="freeItemName != null" >
+        free_item_name = #{freeItemName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

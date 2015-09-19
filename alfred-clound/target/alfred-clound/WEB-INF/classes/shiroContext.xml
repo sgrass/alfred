@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task-3.0.xsd
+	">
+
+	<bean id="userRealm" class="com.alfred.shiro.realm.UserRealm" />
+
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml" />
+	</bean>
+	
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="realm" ref="userRealm" />
+	</bean>
+
+	<bean id="anyPermissionsAuthorizationFilter"
+		class="com.alfred.shiro.filter.AnyPermissionsAuthorizationFilter" />
+		
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login/isLogin" />
+		<property name="unauthorizedUrl" value="/pages/unauthor.jsp" />
+		<property name="filters">
+			<map>
+				<entry key="anyPerms" value-ref="anyPermissionsAuthorizationFilter" />
+			</map>
+		</property>
+		<property name="filterChainDefinitions">
+			<value>
+			  /reportDaySales/queryPdf=anon
+				/static/**=anon
+				/login/**=anon
+				/company/**=anon
+				/empuser/**=user,anyPerms["manager:all,emp_user:all"]
+				/restaurant/**=user,anyPerms["manager:all"]
+				/user/**=user,anyPerms["manager:all"]
+				/userPermission/**=user,anyPerms["manager:all"]
+				/dashboard/**=user
+				/importExcel/**=user,anyPerms["manager:all,product:all"]
+				/mainCategory/**=user,anyPerms["manager:all,product:all"]
+				/category/**=user,anyPerms["manager:all,product:all"]
+				/item/**=user,anyPerms["manager:all,product:all"]
+				/itemModifier/**=user,anyPerms["manager:all,product:all"]
+				/happyHour/**=user,anyPerms["manager:all,product:all"]
+				/itemHappy/**=user,anyPerms["manager:all,product:all"]
+				/modifier/**=user,anyPerms["manager:all,product:all"]
+				/placeTable/**=user,anyPerms["manager:all,place_table:all"]
+				/printer/**=user,anyPerms["manager:all,printer:all"]
+				/profile/**=user,anyPerms["manager:all,profile:all"]
+				/reCrManagement/**=user,anyPerms["manager:all,revenue:all"]
+				/orderDetail/**=user,anyPerms["manager:all,report_order:all"]
+				/reportDaySales/**=user,anyPerms["manager:all,report_sales:all"]
+				/reportHourly/**=user,anyPerms["manager:all,report_hourly:all"]
+				/reportPluDayItem/**=user,anyPerms["manager:all,report_menu:all"]
+				/userTimeSheet/**=user,anyPerms["manager:all,report_user:all"]
+				/report/**=user,anyPerms["manager:all,trans:all"]
+				/revenueCenter/**=user,anyPerms["manager:all,revenue:all"]
+				/reveuneItem/**=user,anyPerms["manager:all,revenue:all"]
+				/rvcMenu/**=user,anyPerms["manager:all,revenue:all"]
+				/settlementRestaurant/**=user,anyPerms["manager:all,settlement:all"]
+				/taxSetting/**=user,anyPerms["manager:all,tax:all"]
+				/reportDiscount/**=user,anyPerms["manager:all,report_discount:all"]
+				/materialStock/**=user,anyPerms["manager:all,inventory:all"]
+				/material/**=user,anyPerms["manager:all,inventory:all"]
+				/modifierMaterial/**=user,anyPerms["manager:all,inventory:all"]
+				/recipeMaterial/**=user,anyPerms["manager:all,inventory:all"]
+				/supplier/**=user,anyPerms["manager:all,inventory:all"]
+				/**=user
+			</value>
+		</property>
+	</bean>
+
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<!-- <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" 
+		depends-on="lifecycleBeanPostProcessor"/> <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"> 
+		<property name="securityManager" ref="securityManager"/> </bean> -->
+</beans>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Websocket test</title>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	var ws;
+	$(document).ready(
+			function() {
+				ws = new WebSocket("ws://localhost:8085/websocket");
+				//ws = new WebSocket("ws://192.168.59.128/websocket");
+				ws.onopen = function(event) {
+					ws.send("{type:0,restId:19,revenueId:3}");
+					$('#status').text("已连接.");
+				}
+				ws.onmessage = function(event) {
+					var res = event.data;
+					res = $.parseJSON(event.data);
+					console.log(event.data);
+					if (res.type == 0) {
+						$(".users").html("");
+						var users = $.parseJSON(res.users);
+						$(".addr").val(res.from);
+						for ( var i in users) {
+							$(".users").append(
+									"<option value='"+users[i].id+"'>"
+											+ users[i].address + "</option>")
+						}
+					} else if(res.type==1){
+						$(".chat-msgs").append("<div class='msg-get'><span class='msg'>"+res.msg+"</span>:"+res.from+"</div> ");
+					} else if(res.type==-1){
+						alert("已下线");
+						ws.send("{type:'0'}");
+					} else if(res.type==-2){
+						ws.send("{type:'-2'}");
+					}
+				}
+				ws.onclose = function(event) {
+					$('#status').text(
+							"服务器已中断.");
+				}
+				$('#msg').keyup(function(e) {
+					if (e.which == 13) {
+						sendNumber();
+					}
+				});
+			});
+	function sendNumber() {
+		var number = $('#msg').val();
+		if (number == "") {
+			return;
+		}
+		ws.send("{type:'1',to:'" + $(".users").val() + "',from:'"
+				+ $(".addr").val() + "',msg:'" + number + "'}");
+		$('#msg').val("");
+		$(".chat-msgs").append("<div class='msg-send'>我:<span class='msg'>"+number+"</span></div>");
+	}
+</script>
+<style>
+body {
+	text-align: center;
+	font-size: 12px;
+}
+
+.chat-box {
+	width: 600px;
+	min-width: 600px;
+	border-radius: 10px;
+	box-shadow: 0 0 4px #333;
+	margin: 0 auto;
+	text-align: left;
+	padding: 15px;
+}
+
+.header {
+	height: 24px;
+}
+
+.chat-msgs {
+	height: 300px;
+	border: 1px solid #ddd;
+	overflow-y: auto;
+	padding:10px;
+}
+
+#msg {
+	width: 100%;
+	height: 100px;
+	resize: none;
+	margin: 0;
+	padding: 5px 0;
+	text-indent: 0.3em;
+}
+
+.chat-msgs .msg-send {
+	text-align: left;
+	margin: 5px 0;
+}
+
+.chat-msgs  .msg {
+	display: inline-block;
+	padding: 5px;
+	border-radius: 6px;
+	border: 1px solid #888;
+}
+
+.chat-msgs .msg-get {
+	text-align: right;
+	margin: 5px 0;
+}
+</style>
+</head>
+<body>
+	<input type="hidden" class="addr">
+	<div class="chat-box">
+		<div class="header">
+			咱们来聊聊吧  <span id="status" style="color:red"></span>
+		</div>
+		<div class="chat-msgs">
+		</div>
+		<div class="to-msg">
+			发送给：<select class="users"></select> <br>
+			<textarea id="msg"></textarea>
+			<input type="button" value="发送" onclick="sendNumber();" />
+		</div>
+	</div>
+	
+</body>
+</html>

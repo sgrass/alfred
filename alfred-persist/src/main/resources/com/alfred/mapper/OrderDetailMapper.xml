@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.OrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.OrderDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="order_origin_id" property="orderOriginId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="item_num" property="itemNum" jdbcType="INTEGER" />
+    <result column="order_detail_status" property="orderDetailStatus" jdbcType="INTEGER" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="print_status" property="printStatus" jdbcType="INTEGER" />
+    <result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="tax_price" property="taxPrice" jdbcType="DECIMAL" />
+    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
+    <result column="discount_rate" property="discountRate" jdbcType="DECIMAL" />
+    <result column="real_price" property="realPrice" jdbcType="DECIMAL" />
+    <result column="split_type" property="splitType" jdbcType="INTEGER" />
+    <result column="order_split_id" property="orderSplitId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="discount_type" property="discountType" jdbcType="INTEGER" />
+    <result column="modifier_price" property="modifierPrice" jdbcType="DECIMAL" />
+    <result column="special_instractions" property="specialInstractions" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="OrderInfoResultMap" type="com.alfred.vo.OrderReoprtVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="persons" property="persons" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="DECIMAL" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+    <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    <result column="rev_name" property="revName" jdbcType="VARCHAR" />
+    <result column="item_num" property="itemNum" jdbcType="INTEGER" />
+    <result column="order_detail_status" property="orderDetailStatus" jdbcType="INTEGER" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="print_status" property="printStatus" jdbcType="INTEGER" />
+    <result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="tax_price" property="taxPrice" jdbcType="DECIMAL" />
+    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
+    <result column="discount_rate" property="discountRate" jdbcType="DECIMAL" />
+    <result column="real_price" property="realPrice" jdbcType="DECIMAL" />
+    <result column="split_type" property="splitType" jdbcType="INTEGER" />
+    <result column="order_split_id" property="orderSplitId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="discount_type" property="discountType" jdbcType="INTEGER" />
+    <result column="modifier_price" property="modifierPrice" jdbcType="DECIMAL" />
+    <result column="special_instractions" property="specialInstractions" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="queryOrderInfo" resultMap="OrderInfoResultMap" parameterType="java.util.HashMap" >
+		select a.*,b.business_date, b.persons,b.total, 
+		(SELECT CONCAT(first_name,last_name) FROM user WHERE id=a.user_id) as emp_name,
+		(SELECT rev_name FROM revenue_center WHERE id=b.revenue_id) as rev_name,
+		(SELECT table_name FROM tables WHERE id = b.table_id) as table_name,
+		(SELECT item_name FROM item_detail WHERE id=a.item_id) as item_name
+		FROM order_detail a, `order` b WHERE a.order_id=b.id
+		<if test="userId != null">
+			AND b.user_id = #{userId,jdbcType=INTEGER}
+		</if>
+		<if test="restaurantId != null">
+			AND b.rest_id  = #{restaurantId,jdbcType=INTEGER}
+		</if>
+		<if test="revenueId != null">
+			AND b.revenue_id   = #{revenueId,jdbcType=INTEGER}
+		</if>
+	    <if test="itemId != null">
+			AND a.item_id  = #{itemId,jdbcType=INTEGER}
+		</if>
+		<if test="startTime != null">
+		<![CDATA[ 
+			AND	b.business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  
+			AND b.business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+		]]>
+		</if>
+		
+		 <if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+	 </if>
+  </select>
+  
+  <select id="getOrderInfoCount" resultType="java.lang.Integer" parameterType="java.util.HashMap" >
+		select count(*)
+		FROM order_detail a, `order` b WHERE a.order_id=b.id
+		<if test="userId != null">
+			AND b.user_id = #{userId,jdbcType=INTEGER}
+		</if>
+		<if test="restaurantId != null">
+			AND b.rest_id  = #{restaurantId,jdbcType=INTEGER}
+		</if>
+		<if test="revenueId != null">
+			AND b.revenue_id   = #{revenueId,jdbcType=INTEGER}
+		</if>
+	    <if test="itemId != null">
+			AND a.item_id  = #{itemId,jdbcType=INTEGER}
+		</if>
+		<if test="startTime != null">
+		<![CDATA[ 
+			AND	b.business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  
+			AND b.business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+		]]>
+		</if>
+  </select>
+  
+  <sql id="Base_Column_List" >
+    id, order_id, order_origin_id, user_id, item_id, item_num, order_detail_status, reason, 
+    print_status, item_price, tax_price, discount_price, discount_rate, real_price, split_type, 
+    order_split_id, create_time, update_time, sys_create_time, sys_update_time, discount_type, 
+    modifier_price
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.OrderDetail" >
+    select
+    <include refid="Base_Column_List" />
+    from order_detail
+    <where >
+      <if test="orderId != null" >
+        AND order_id = #{orderId,jdbcType=INTEGER}
+      </if>
+      <if test="orderOriginId != null" >
+        AND order_origin_id = #{orderOriginId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="itemId != null" >
+        AND item_id = #{itemId,jdbcType=INTEGER}
+      </if>
+      <if test="itemNum != null" >
+        AND item_num = #{itemNum,jdbcType=INTEGER}
+      </if>
+      <if test="orderDetailStatus != null" >
+        AND order_detail_status = #{orderDetailStatus,jdbcType=INTEGER}
+      </if>
+      <if test="reason != null" >
+        AND reason = #{reason,jdbcType=VARCHAR}
+      </if>
+      <if test="printStatus != null" >
+        AND print_status = #{printStatus,jdbcType=INTEGER}
+      </if>
+      <if test="itemPrice != null" >
+        AND item_price = #{itemPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="taxPrice != null" >
+        AND tax_price = #{taxPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="discountPrice != null" >
+        AND discount_price = #{discountPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="discountRate != null" >
+        AND discount_rate = #{discountRate,jdbcType=DECIMAL}
+      </if>
+      <if test="realPrice != null" >
+        AND real_price = #{realPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="splitType != null" >
+        AND split_type = #{splitType,jdbcType=INTEGER}
+      </if>
+      <if test="orderSplitId != null" >
+        AND order_split_id = #{orderSplitId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysCreateTime != null" >
+        AND sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysUpdateTime != null" >
+        AND sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="discountType != null" >
+        AND discount_type = #{discountType,jdbcType=INTEGER}
+      </if>
+      <if test="modifierPrice != null" >
+        AND modifier_price = #{modifierPrice,jdbcType=DECIMAL}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.OrderDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into order_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderOriginId != null" >
+        order_origin_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="itemNum != null" >
+        item_num,
+      </if>
+      <if test="orderDetailStatus != null" >
+        order_detail_status,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="printStatus != null" >
+        print_status,
+      </if>
+      <if test="itemPrice != null" >
+        item_price,
+      </if>
+      <if test="taxPrice != null" >
+        tax_price,
+      </if>
+      <if test="discountPrice != null" >
+        discount_price,
+      </if>
+      <if test="discountRate != null" >
+        discount_rate,
+      </if>
+      <if test="realPrice != null" >
+        real_price,
+      </if>
+      <if test="splitType != null" >
+        split_type,
+      </if>
+      <if test="orderSplitId != null" >
+        order_split_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time,
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time,
+      </if>
+      <if test="discountType != null" >
+        discount_type,
+      </if>
+      <if test="modifierPrice != null" >
+        modifier_price,
+      </if>
+      <if test="specialInstractions != null" >
+        special_instractions,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderOriginId != null" >
+        #{orderOriginId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemNum != null" >
+        #{itemNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderDetailStatus != null" >
+        #{orderDetailStatus,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="printStatus != null" >
+        #{printStatus,jdbcType=INTEGER},
+      </if>
+      <if test="itemPrice != null" >
+        #{itemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxPrice != null" >
+        #{taxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPrice != null" >
+        #{discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null" >
+        #{discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="realPrice != null" >
+        #{realPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="splitType != null" >
+        #{splitType,jdbcType=INTEGER},
+      </if>
+      <if test="orderSplitId != null" >
+        #{orderSplitId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discountType != null" >
+        #{discountType,jdbcType=INTEGER},
+      </if>
+      <if test="modifierPrice != null" >
+        #{modifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="specialInstractions != null" >
+        #{specialInstractions,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.OrderDetail" >
+    update order_detail
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderOriginId != null" >
+        order_origin_id = #{orderOriginId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemNum != null" >
+        item_num = #{itemNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderDetailStatus != null" >
+        order_detail_status = #{orderDetailStatus,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="printStatus != null" >
+        print_status = #{printStatus,jdbcType=INTEGER},
+      </if>
+      <if test="itemPrice != null" >
+        item_price = #{itemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxPrice != null" >
+        tax_price = #{taxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPrice != null" >
+        discount_price = #{discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null" >
+        discount_rate = #{discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="realPrice != null" >
+        real_price = #{realPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="splitType != null" >
+        split_type = #{splitType,jdbcType=INTEGER},
+      </if>
+      <if test="orderSplitId != null" >
+        order_split_id = #{orderSplitId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discountType != null" >
+        discount_type = #{discountType,jdbcType=INTEGER},
+      </if>
+      <if test="modifierPrice != null" >
+        modifier_price = #{modifierPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="specialInstractions != null" >
+        special_instractions = #{specialInstractions,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

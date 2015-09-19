@@ -1,0 +1,414 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@include file="/pages/inc/common.jsp"%>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="ThemeBucket">
+<script type="text/javascript" src="${staticPath}/js/city_state.js"></script>
+<title>RT Profile</title>
+</head>
+<body>
+	<!--main content start-->
+<section id="main-content">
+     <section class="wrapper">
+<div class="row" style="width:60%; margin:0 auto;"></div>
+<div class="col-md-8">
+    <section class="panel">
+        <div class="panel-body">
+            <!--  <div class="position-center">-->
+            <form class="form-horizontal" method="post"  id="contact-form" action="${contextPath}/profile/updateRestaurant">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Store Type</label>
+                    <div class="col-lg-9">
+                        <select class="form-control" disabled>
+                             <c:if test="${restaurant.type==1 }" >
+                              <option value="1">Restaurant</option>
+                             </c:if>
+                            <c:if test="${restaurant.type==2 }" >
+                                <option value="2">Coffee Shop</option>
+                             </c:if>
+                              <c:if test="${restaurant.type==3 }" >
+                           <option value="3">Food/Drink Shop</option>
+                             </c:if>
+                              <c:if test="${restaurant.type==4 }" >
+                              <option value="4">Bar/Lounge/Club</option>
+                             </c:if> 
+                        </select>
+                    </div>
+                </div>
+                 <input type="hidden" name="id" value="${restaurant.id }"/>
+                <div class="form-group">
+                    <label for="inputStoreName" class="col-lg-3 col-sm-3 control-label">Store Name</label>
+                    <div class="col-lg-9">
+                        <input type="text" name="restaurantName" class="form-control" id="inputStoreName" value="${restaurant.restaurantName }" placeholder="Company Name">
+                    </div>
+                </div>
+                    <div class="form-group">
+                    <label class="col-lg-3 col-sm-2 control-label">Country</label>
+                    <div class="col-lg-9">
+                         <select class="form-control"  onchange="set_country(this,state,city)"  name="country">
+                            <option value="${restaurant.country }" selected="selected">${restaurant.country }</option>
+                            <script type="text/javascript">setRegions(this);</script>
+                      </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                  
+                    <label for="inputState" class="col-lg-3 col-sm-3 control-label">State</label>
+
+                    <div class="col-lg-4">
+                       <select name="state" class="form-control" disabled="disabled" onchange="set_city_state(this,city)">
+                        <option value="${restaurant.state }" selected="selected">${restaurant.state }</option>
+                       
+                       </select>
+                    </div>
+                    <label for="inputCity" class="col-lg-1 col-sm-1 control-label">City</label>
+                    <div class="col-lg-4">
+                       <select name="city"  class="form-control"  disabled="disabled" onchange="print_city_state(state,this)">
+                       <option value="${restaurant.city }" selected="selected">${restaurant.city }</option>
+                       
+                       </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputZip" class="col-lg-3 col-sm-3 control-label">Post</label>
+                    <div class="col-lg-4">
+                        <input type="text" name="postalCode" value="${restaurant.postalCode }" class="form-control" id="inputZip" placeholder="Post">
+                    </div>
+                    <label for="inputPhone" class="col-lg-1 col-sm-1 control-label">Phone</label>
+                    <div class="col-lg-4">
+                        <input type="tel" name="telNo" value="${restaurant.telNo }" class="form-control" id="inputPhone" placeholder="Phone" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputStreetAddress" class="col-lg-3 col-sm-3 control-label">Address1</label>
+                    <div class="col-lg-9">
+                        <input type="text"  name="address1"  value="${restaurant.address1 }" class="form-control" id="inputStreetAddress" placeholder="Street Address">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress" class="col-lg-3 col-sm-3 control-label">Address2</label>
+                    <div class="col-lg-9">
+                        <input type="text"   name="address2"  value="${restaurant.address2 }" class="form-control" id="inputAddress"placeholder="inputAddressLine2">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail" class="col-lg-3 col-sm-3 control-label">Email</label>
+                    <div class="col-lg-9">
+                        <input type="email"  name="email"   value="${restaurant.email }" class="form-control" id="inputEmail" required placeholder="Email"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputWebSite" class="col-lg-3 col-sm-3 control-label">WebSite</label>
+                    <div class="col-lg-9">
+                        <input type="text" name="website" value="${restaurant.website }" class="form-control" id="inputWebSite" placeholder="WebSite">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-lg-offset-3 col-lg-3">
+                        <div class="checkbox">
+                            <label> mobile payment <input id="checkbox1" type="checkbox"></label>
+                        </div>
+                    </div>
+                    <div class="col-lg-offset-3 col-lg-3">
+                        <button type="button" id="saveBut" class="btn btn-danger">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+<div style="position: fixed ;right: 30px;">
+    <div class="row mini-stat-o clearfix">
+        <div class="col-md-12 ">
+            <div class="row text-center"><span id="spanStoreName"></span></div>
+            <div class="row text-center"><span id="spanStreetAddress"></span></div>
+            <div class="row text-center">
+	            <span id="spanStreetline2"></span>
+	            <span id="spanCity"></span> 
+	            <span id="spanZip"></span>
+            </div>
+            <div class="row text-center"> Tel:<span id="spanPhone"></span></div>
+            <div class="row text-center"> Email:<span id="spanEmail"></span></div>
+            <div class="row text-center"> Website:<span id="spanWebsite"></span></div>
+        </div>
+    </div>
+    <div class="row  mini-stat-o clearfix">
+        <div class="col-md-12">
+            <div class="row ">
+                <div class="col-md-4">
+                    OP:Cashier
+                </div>
+                <div class="col-md-4">
+                    POP:BOO1
+                </div>
+                <div class="col-md-4">
+                    Date:01/04/2014
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    Bill-NO.:0A0103424
+                </div>
+                <div class="col-md-4 col-md-offset-2">
+                    Time:23:00
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <strong>Table:11</strong>
+                </div>
+                <div class="col-md-4 col-md-offset-2">
+                    <strong> PAX:2</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mini-stat-o clearfix">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">Item Name</div>
+                <div class="col-md-2">Qty</div>
+                <div class="col-md-2">Amount</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">buffet</div>
+                <div class="col-md-2">1</div>
+                <div class="col-md-2">$33.80</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Beer mug</div>
+                <div class="col-md-2">2</div>
+                <div class="col-md-2">$40.00</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Lemon tea</div>
+                <div class="col-md-2">2</div>
+                <div class="col-md-2">$4.00</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mini-stat-o">
+        <div class="col-md-12">
+            <div class="row text-right">
+                <div class="col-md-6">Sub Total</div>
+                <div class="col-md-6">$77.80</div>
+            </div>
+            <div class="row text-right">
+                <div class="col-md-6">Discount</div>
+                <div class="col-md-6">-$10.00</div>
+            </div>
+            <div class="row text-right">
+                <div class="col-md-6">Service Charge(10%)</div>
+                <div class="col-md-6">$6.78</div>
+            </div>
+            <div class="row text-right">
+                <div class="col-md-6">GST(7%)</div>
+                <div class="col-md-6">$5.22</div>
+            </div>
+            <div class="row text-right">
+                <div class="col-md-6">Grand Total</div>
+                <div class="col-md-6">$79.8O</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mini-stat-o">
+        <div class="col-md-12">
+            <div class="row text-right">
+                <div class="col-md-6">Cash</div>
+                <div class="col-md-6">$100.OO</div>
+            </div>
+            <div class="row text-right">
+                <div class="col-md-6">Change</div>
+                <div class="col-md-6">$20.00</div>
+            </div>
+            <div class="row text-center">
+               <div  id="ihatetheqrcode" style="width:50px;height:50px;background:red;display:none"></div>
+            </div>
+            <div class="row text-center">
+                Thank You
+            </div>
+            <div class="row text-center">
+                Please Come Again
+            </div>
+
+        </div>
+    </div>
+</div>
+	</section>
+	</section>
+	<div id="txtregion"></div>
+    <div id="txtplacename"></div>
+	 <script type="text/javascript" src="${staticPath}/js/scripts.js"></script>
+	 <script type="text/javascript" src="${staticPath}/js/bootbox.js"></script>
+	 <script type="text/javascript" src="${staticPath}/js/jquery.validate.min.js"></script>
+	 <script type="text/javascript">
+	 
+	    $("#rtManagerMenuA").addClass("active");
+		$("#rtManagerSub").css('display', 'block');
+		$("#restInfo").addClass("active");
+		
+	 
+	 
+    $(document).ready(function () {
+    	setTemplateValue();
+        //当光标离开时触发
+       var validator= $('.form-horizontal').validate({
+             rules: {
+                inputEmail: {
+                    required: true,
+                    email: true
+                },
+                inputZip: {
+                    required: true,
+                    number: true,
+                    rangelength: [3, 5]
+                },
+                inputPhone: {
+                    required: true,
+                    number: true
+
+                },
+                website:{url:true}
+            },
+            messages: {
+                inputEmail: "Please enter a valid email address",
+                inputPhone: {
+                    required: "You must enter your phone number",
+                    number: "Phone number must contain digits only"
+                },inputZip:{
+                    required: "You must enter your zip code",
+                    number: "Zip code must contain digits only",
+                    rangelength : "Zip code must have between 3 to 5 "
+                },website:{
+                	url:"Please enter a valid URL."
+                }
+            }
+        });
+
+
+        $("#saveBut").click(function(){
+        	
+	       var check = validator.form();
+    		
+    	    if (check) { 
+    	    	
+                $(".form-horizontal").submit();
+
+    	    }
+        	
+        	
+        });
+        
+       function setTemplateValue(){
+    	   
+    	   var phone = $("#inputPhone").val();
+           $("#spanPhone").text(phone);
+    	   
+    	   var storeName = $("#inputStoreName").val();
+           $("#spanStoreName").text(storeName); 
+    	   
+           var storeName = $("#inputStoreName").val();
+           $("#spanStoreName").text(storeName); 
+    	   
+           var streetAddress = $("#inputStreetAddress").val();
+           $("#spanStreetAddress").text(streetAddress);
+           
+           var address = $("#inputAddress").val();
+           $("#spanStreetline2").text(address);
+           
+           
+           var city = $("#inputCity").val();
+           $("#spanCity").text(city);
+           
+           var zip = $("#inputZip").val();
+           $("#spanZip").text(zip);
+           
+           var email = $("#inputEmail").val();
+           $("#spanEmail").text(email);
+           
+           
+           var webSite = $("#inputWebSite").val();
+           $("#spanWebsite").text(webSite);
+       }
+        
+        
+        //update phone
+        $("#inputPhone").blur(function () {
+            var phone = $("#inputPhone").val();
+            $("#spanPhone").text(phone);
+        });
+
+
+        //update inputStoreName
+        $("#inputStoreName").blur(function () {
+            var storeName = $("#inputStoreName").val();
+            $("#spanStoreName").text(storeName);
+        });
+
+        //update inputStreetAddress
+        $("#inputStreetAddress").blur(function () {
+            var streetAddress = $("#inputStreetAddress").val();
+            $("#spanStreetAddress").text(streetAddress);
+        });
+
+        //update inputAddress
+        $("#inputAddress").blur(function () {
+            var address = $("#inputAddress").val();
+            $("#spanStreetline2").text(address);
+        });
+
+        //update inputCity
+        $("#inputCity").blur(function () {
+            var city = $("#inputCity").val();
+            $("#spanCity").text(city);
+        });
+
+        //update inputZip
+        $("#inputZip").blur(function () {
+            var zip = $("#inputZip").val();
+            $("#spanZip").text(zip);
+        });
+        //update inputEmail
+        $("#inputEmail").blur(function () {
+
+            var email = $("#inputEmail").val();
+            $("#spanEmail").text(email);
+        });
+
+        //update inputWebSite
+        $("#inputWebSite").blur(function () {
+            var webSite = $("#inputWebSite").val();
+            $("#spanWebsite").text(webSite);
+        });
+
+    })
+    
+    
+   
+        $("#checkbox1").click(function(){ 
+        	var thischeck = $(this);
+        	  if (thischeck.is(':checked') ) {
+                 //选中了显示二维码
+        		  $("#ihatetheqrcode").show();
+        		  
+        	  }else{
+        		 //不选择不显示
+        		  $("#ihatetheqrcode").hide();
+
+        	  }
+        }) 
+
+</script>
+</body>
+</html>

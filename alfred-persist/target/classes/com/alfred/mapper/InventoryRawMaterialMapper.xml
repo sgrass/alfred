@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.InventoryRawMaterialMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.InventoryRawMaterial" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="raw_material_name" property="rawMaterialName" jdbcType="VARCHAR" />
+    <result column="unit_of_measurement" property="unitOfMeasurement" jdbcType="VARCHAR" />
+    <result column="quantity_min" property="quantityMin" jdbcType="DECIMAL" />
+    <result column="quantity_current" property="quantityCurrent" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+   <resultMap id="ResultReoprtMap" type="com.alfred.vo.InventoryRawMaterialVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="raw_material_name" property="rawMaterialName" jdbcType="VARCHAR" />
+    <result column="unit_of_measurement" property="unitOfMeasurement" jdbcType="VARCHAR" />
+    <result column="quantity_min" property="quantityMin" jdbcType="DECIMAL" />
+    <result column="quantity_current" property="quantityCurrent" jdbcType="DECIMAL" />
+    <result column="quantity_usable" property="quantityUsable" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+  
+  <sql id="Base_Column_List" >
+    id, restaurant_id, raw_material_name, unit_of_measurement, quantity_min, quantity_current, 
+    status, version, create_time, update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.InventoryRawMaterial" >
+    select
+    <include refid="Base_Column_List" />
+    from inventory_raw_material
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="rawMaterialName != null" >
+        AND raw_material_name = #{rawMaterialName,jdbcType=VARCHAR}
+      </if>
+      <if test="unitOfMeasurement != null" >
+        AND unit_of_measurement = #{unitOfMeasurement,jdbcType=VARCHAR}
+      </if>
+      <if test="quantityMin != null" >
+        AND quantity_min = #{quantityMin,jdbcType=DECIMAL}
+      </if>
+      <if test="quantityCurrent != null" >
+        AND quantity_current = #{quantityCurrent,jdbcType=DECIMAL}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="version != null" >
+        AND version = #{version,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectByParamReoprt" resultMap="ResultReoprtMap" parameterType="java.util.HashMap">
+    select  id, restaurant_id, raw_material_name, unit_of_measurement, quantity_min, quantity_current,
+     (quantity_current-quantity_min) quantity_usable,
+    status, version, create_time, update_time
+    from inventory_raw_material
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="rawMaterialName != null" >
+        AND raw_material_name = #{rawMaterialName,jdbcType=VARCHAR}
+      </if>
+      <if test="unitOfMeasurement != null" >
+        AND unit_of_measurement = #{unitOfMeasurement,jdbcType=VARCHAR}
+      </if>
+      <if test="quantityMin != null" >
+        AND quantity_min = #{quantityMin,jdbcType=DECIMAL}
+      </if>
+      <if test="quantityCurrent != null" >
+        AND quantity_current = #{quantityCurrent,jdbcType=DECIMAL}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="version != null" >
+        AND version = #{version,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="startTime != null" >
+        <![CDATA[ and
+	      create_time > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  create_time < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+      <if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+	  </if>
+    </where>
+  </select>
+ 
+    <select id="selectByParamReoprtCount"  resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select  count(*)
+    from inventory_raw_material
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="rawMaterialName != null" >
+        AND raw_material_name = #{rawMaterialName,jdbcType=VARCHAR}
+      </if>
+      <if test="unitOfMeasurement != null" >
+        AND unit_of_measurement = #{unitOfMeasurement,jdbcType=VARCHAR}
+      </if>
+      <if test="quantityMin != null" >
+        AND quantity_min = #{quantityMin,jdbcType=DECIMAL}
+      </if>
+      <if test="quantityCurrent != null" >
+        AND quantity_current = #{quantityCurrent,jdbcType=DECIMAL}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="version != null" >
+        AND version = #{version,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="startTime != null" >
+        <![CDATA[ and
+	      create_time > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  create_time < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+    </where>
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from inventory_raw_material
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from inventory_raw_material
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.InventoryRawMaterial" >
+    insert into inventory_raw_material
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="rawMaterialName != null" >
+        raw_material_name,
+      </if>
+      <if test="unitOfMeasurement != null" >
+        unit_of_measurement,
+      </if>
+      <if test="quantityMin != null" >
+        quantity_min,
+      </if>
+      <if test="quantityCurrent != null" >
+        quantity_current,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="rawMaterialName != null" >
+        #{rawMaterialName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitOfMeasurement != null" >
+        #{unitOfMeasurement,jdbcType=VARCHAR},
+      </if>
+      <if test="quantityMin != null" >
+        #{quantityMin,jdbcType=DECIMAL},
+      </if>
+      <if test="quantityCurrent != null" >
+        #{quantityCurrent,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.InventoryRawMaterial" >
+    update inventory_raw_material
+    <set >
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="rawMaterialName != null" >
+        raw_material_name = #{rawMaterialName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitOfMeasurement != null" >
+        unit_of_measurement = #{unitOfMeasurement,jdbcType=VARCHAR},
+      </if>
+      <if test="quantityMin != null" >
+        quantity_min = #{quantityMin,jdbcType=DECIMAL},
+      </if>
+      <if test="quantityCurrent != null" >
+        quantity_current = #{quantityCurrent,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateAddQtyById" parameterType="com.alfred.model.InventoryRawMaterial" >
+  	UPDATE inventory_raw_material SET quantity_current = quantity_current+#{quantityCurrent,jdbcType=DECIMAL}
+  	WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateSubQtyById" parameterType="com.alfred.model.InventoryRawMaterial" >
+  	UPDATE inventory_raw_material SET quantity_current = quantity_current-#{quantityCurrent,jdbcType=DECIMAL}
+  	WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

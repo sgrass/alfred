@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.CardsSettlementMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.CardsSettlement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="payment_id" property="paymentId" jdbcType="INTEGER" />
+    <result column="payment_sett_id" property="paymentSettId" jdbcType="INTEGER" />
+    <result column="bill_no" property="billNo" jdbcType="INTEGER" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="name_of_person" property="nameOfPerson" jdbcType="VARCHAR" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="cvv_no" property="cvvNo" jdbcType="INTEGER" />
+    <result column="card_expiry_date" property="cardExpiryDate" jdbcType="TIMESTAMP" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, payment_id, payment_sett_id, bill_no, bank_id, name_of_person, card_no, card_type, 
+    cvv_no, card_expiry_date, amount, create_time, update_time, sys_create_time, sys_update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.CardsSettlement" >
+    select
+    <include refid="Base_Column_List" />
+    from cards_settlement
+    <where >
+      <if test="paymentId != null" >
+        AND payment_id = #{paymentId,jdbcType=INTEGER}
+      </if>
+      <if test="paymentSettId != null" >
+        AND payment_sett_id = #{paymentSettId,jdbcType=INTEGER}
+      </if>
+      <if test="billNo != null" >
+        AND bill_no = #{billNo,jdbcType=INTEGER}
+      </if>
+      <if test="bankId != null" >
+        AND bank_id = #{bankId,jdbcType=INTEGER}
+      </if>
+      <if test="nameOfPerson != null" >
+        AND name_of_person = #{nameOfPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="cardNo != null" >
+        AND card_no = #{cardNo,jdbcType=VARCHAR}
+      </if>
+      <if test="cardType != null" >
+        AND card_type = #{cardType,jdbcType=INTEGER}
+      </if>
+      <if test="cvvNo != null" >
+        AND cvv_no = #{cvvNo,jdbcType=INTEGER}
+      </if>
+      <if test="cardExpiryDate != null" >
+        AND card_expiry_date = #{cardExpiryDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="amount != null" >
+        AND amount = #{amount,jdbcType=DECIMAL}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysCreateTime != null" >
+        AND sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysUpdateTime != null" >
+        AND sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cards_settlement
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cards_settlement
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.CardsSettlement" >
+    insert into cards_settlement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="paymentId != null" >
+        payment_id,
+      </if>
+      <if test="paymentSettId != null" >
+        payment_sett_id,
+      </if>
+      <if test="billNo != null" >
+        bill_no,
+      </if>
+      <if test="bankId != null" >
+        bank_id,
+      </if>
+      <if test="nameOfPerson != null" >
+        name_of_person,
+      </if>
+      <if test="cardNo != null" >
+        card_no,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="cvvNo != null" >
+        cvv_no,
+      </if>
+      <if test="cardExpiryDate != null" >
+        card_expiry_date,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time,
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="paymentId != null" >
+        #{paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="paymentSettId != null" >
+        #{paymentSettId,jdbcType=INTEGER},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=INTEGER},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="nameOfPerson != null" >
+        #{nameOfPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="cvvNo != null" >
+        #{cvvNo,jdbcType=INTEGER},
+      </if>
+      <if test="cardExpiryDate != null" >
+        #{cardExpiryDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.CardsSettlement" >
+    update cards_settlement
+    <set >
+      <if test="paymentId != null" >
+        payment_id = #{paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="paymentSettId != null" >
+        payment_sett_id = #{paymentSettId,jdbcType=INTEGER},
+      </if>
+      <if test="billNo != null" >
+        bill_no = #{billNo,jdbcType=INTEGER},
+      </if>
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="nameOfPerson != null" >
+        name_of_person = #{nameOfPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="cvvNo != null" >
+        cvv_no = #{cvvNo,jdbcType=INTEGER},
+      </if>
+      <if test="cardExpiryDate != null" >
+        card_expiry_date = #{cardExpiryDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

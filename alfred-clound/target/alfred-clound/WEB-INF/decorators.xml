@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<decorators defaultDir="/pages">
+
+	<excludes>
+		<pattern>/static/*</pattern>
+		<pattern>/reportDaySales/queryPdf</pattern>
+	</excludes>
+
+<!-- 	<decorator name="main" page="layout/main.jsp"> -->
+<!-- 		<pattern>/login/*</pattern> -->
+<!-- 		<pattern>/user/*</pattern> -->
+<!-- 	</decorator> -->
+
+	<decorator name="rtmain" page="layout/rt_main.jsp">
+		<pattern>/dashboard/*</pattern>
+		<pattern>/empuser/*</pattern>
+		<pattern>/printer/*</pattern>
+		<pattern>/revenueCenter/*</pattern>
+		<pattern>/placeTable/*</pattern>
+		<pattern>/reports/*</pattern>
+		<pattern>/mainCategory/*</pattern>
+		<pattern>/category/*</pattern>
+		<pattern>/item/*</pattern>
+		<pattern>/modifier/*</pattern>
+		<pattern>/itemModifier/*</pattern>
+		<pattern>/reveuneItem/*</pattern>
+		<pattern>/reCrManagement/*</pattern>
+		<pattern>/happyHour/*</pattern>
+		<pattern>/taxSetting/*</pattern>
+		<pattern>/rvcMenu/*</pattern>
+		<pattern>/profile/*</pattern>
+		<pattern>/settlementRestaurant/*</pattern>
+		<pattern>/importExcel/*</pattern>
+		<pattern>/orderDetail/*</pattern>
+		<pattern>/reportDaySales/*</pattern>
+		<pattern>/reportPluDayItem/*</pattern>
+		<pattern>/report/*</pattern>
+		<pattern>/reportHourly/*</pattern>
+		<pattern>/userTimeSheet/*</pattern>
+		<pattern>/printerGroup/*</pattern>
+		<pattern>/userInfo/*</pattern>
+		<pattern>/reportDiscount/*</pattern>
+		<pattern>/supplier/*</pattern>
+		<pattern>/material/*</pattern>
+		<pattern>/materialStock/*</pattern>
+		<pattern>/recipeMaterial/*</pattern>
+		<pattern>/modifierMaterial/*</pattern>
+		
+	</decorator>
+	<decorator name="hqmain" page="layout/hq_main.jsp">
+		<pattern>/hqmanager/*</pattern>
+		<pattern>/restaurant/*</pattern>
+		<pattern>/userPermission/*</pattern>
+		<pattern>/user/*</pattern>
+		<pattern>/userInfo/*</pattern>
+	</decorator>
+
+	<decorator name="none">
+		<pattern>/pages/login/login.jsp</pattern>
+	</decorator>
+</decorators>

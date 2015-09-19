@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.RoundAmountMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.RoundAmount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="bill_no" property="billNo" jdbcType="INTEGER" />
+    <result column="round_before_price" property="roundBeforePrice" jdbcType="DECIMAL" />
+    <result column="round_alfter_price" property="roundAlfterPrice" jdbcType="DECIMAL" />
+    <result column="round_balance_price" property="roundBalancePrice" jdbcType="DECIMAL" />
+    <result column="rest_id" property="restId" jdbcType="INTEGER" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="table_id" property="tableId" jdbcType="INTEGER" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_id, bill_no, round_before_price, round_alfter_price, round_balance_price, 
+    rest_id, revenue_id, table_id, business_date, create_time, update_time, sys_create_time, 
+    sys_update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.RoundAmount" >
+    select
+    <include refid="Base_Column_List" />
+    from round_amount
+    <where >
+      <if test="orderId != null" >
+        AND order_id = #{orderId,jdbcType=INTEGER}
+      </if>
+      <if test="billNo != null" >
+        AND bill_no = #{billNo,jdbcType=INTEGER}
+      </if>
+      <if test="roundBeforePrice != null" >
+        AND round_before_price = #{roundBeforePrice,jdbcType=DECIMAL}
+      </if>
+      <if test="roundAlfterPrice != null" >
+        AND round_alfter_price = #{roundAlfterPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="roundBalancePrice != null" >
+        AND round_balance_price = #{roundBalancePrice,jdbcType=DECIMAL}
+      </if>
+      <if test="restId != null" >
+        AND rest_id = #{restId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="tableId != null" >
+        AND table_id = #{tableId,jdbcType=INTEGER}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysCreateTime != null" >
+        AND sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysUpdateTime != null" >
+        AND sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  
+    <select id="queryRoundValue" resultMap="BaseResultMap" parameterType="java.util.HashMap"   >
+         SELECT SUM(round_balance_price) round_balance_price FROM round_amount
+    <where >
+      <if test="restId != null" >
+        AND rest_id = #{restId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+   
+  
+    </where>
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from round_amount
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from round_amount
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.RoundAmount" >
+    insert into round_amount
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="billNo != null" >
+        bill_no,
+      </if>
+      <if test="roundBeforePrice != null" >
+        round_before_price,
+      </if>
+      <if test="roundAlfterPrice != null" >
+        round_alfter_price,
+      </if>
+      <if test="roundBalancePrice != null" >
+        round_balance_price,
+      </if>
+      <if test="restId != null" >
+        rest_id,
+      </if>
+      <if test="revenueId != null" >
+        revenue_id,
+      </if>
+      <if test="tableId != null" >
+        table_id,
+      </if>
+      <if test="businessDate != null" >
+        business_date,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time,
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=INTEGER},
+      </if>
+      <if test="roundBeforePrice != null" >
+        #{roundBeforePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="roundAlfterPrice != null" >
+        #{roundAlfterPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="roundBalancePrice != null" >
+        #{roundBalancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="restId != null" >
+        #{restId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueId != null" >
+        #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null" >
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="businessDate != null" >
+        #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.RoundAmount" >
+    update round_amount
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="billNo != null" >
+        bill_no = #{billNo,jdbcType=INTEGER},
+      </if>
+      <if test="roundBeforePrice != null" >
+        round_before_price = #{roundBeforePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="roundAlfterPrice != null" >
+        round_alfter_price = #{roundAlfterPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="roundBalancePrice != null" >
+        round_balance_price = #{roundBalancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="restId != null" >
+        rest_id = #{restId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null" >
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="businessDate != null" >
+        business_date = #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

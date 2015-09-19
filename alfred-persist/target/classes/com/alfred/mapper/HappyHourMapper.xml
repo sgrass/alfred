@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.HappyHourMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.HappyHour" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="happy_hour_name" property="happyHourName" jdbcType="VARCHAR" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="HappyHourVOResultMap" type="com.alfred.vo.HappyHourVO" >
+    <id column="h_id" property="id" jdbcType="INTEGER" />
+    <result column="h_happy_hour_name" property="happyHourName" jdbcType="VARCHAR" />
+    <result column="h_is_active" property="isActive" jdbcType="INTEGER" />
+    <collection property="itemHappyList" ofType="com.alfred.model.ItemHappyHour" column="i_id">
+    	<id column="i_id" property="id" jdbcType="INTEGER" />
+	    <result column="i_happy_hour_id" property="happyHourId" jdbcType="INTEGER" />
+	    <result column="i_item_main_category_id" property="itemMainCategoryId" jdbcType="INTEGER" />
+	    <result column="i_item_category_id" property="itemCategoryId" jdbcType="INTEGER" />
+	    <result column="i_item_id" property="itemId" jdbcType="INTEGER" />
+	    <result column="i_type" property="type" jdbcType="INTEGER" />
+	    <result column="i_discount_price" property="discountPrice" jdbcType="DECIMAL" />
+	    <result column="i_discount_rate" property="discountRate" jdbcType="DECIMAL" />
+	    <result column="i_free_num" property="freeNum" jdbcType="INTEGER" />
+	    <result column="free_item_id" property="freeItemId" jdbcType="INTEGER" />
+	    <result column="item_main_category_name" property="itemMainCategoryName" jdbcType="VARCHAR" />
+	    <result column="item_category_name" property="itemCategoryName" jdbcType="VARCHAR" />
+	    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+	    <result column="free_item_name" property="freeItemName" jdbcType="VARCHAR" />
+    </collection>
+    <collection property="happyWeekList" ofType="com.alfred.model.HappyHourWeek" column="w_id">
+	    <id column="w_id" property="id" jdbcType="INTEGER" />
+	    <result column="w_happy_hour_id" property="happyHourId" jdbcType="INTEGER" />
+	    <result column="w_week" property="week" jdbcType="VARCHAR" />
+	    <result column="w_start_time" property="startTime" jdbcType="TIME" />
+	    <result column="w_end_time" property="endTime" jdbcType="TIME" />
+	    <result column="w_is_active" property="isActive" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
+  
+  <select id="selectHappyHourAll" resultMap="HappyHourVOResultMap" parameterType="java.lang.Integer">
+  	SELECT 
+  	h.id as h_id, h.happy_hour_name as h_happy_hour_name, h.is_active as h_is_active,
+  	i.id as i_id, i.happy_hour_id as i_happy_hour_id, i.item_main_category_id as i_item_main_category_id, 
+  	i.item_category_id as i_item_category_id, i.item_id as i_item_id, 
+  	i.type as i_type, i.discount_price as i_discount_price, i.discount_rate as i_discount_rate, i.free_num as i_free_num,
+  	i.item_main_category_name, i.item_category_name, i.item_name, i.free_item_id, i.free_item_name,
+  	w.id as w_id, w.happy_hour_id as w_happy_hour_id, w.week as w_week, w.start_time as w_start_time,
+  	w.end_time as w_end_time, w.is_active as w_is_active
+  	FROM 
+  	happy_hour h LEFT JOIN item_happy_hour i ON h.id=i.happy_hour_id  LEFT JOIN happy_hour_week w ON  h.id=w.happy_hour_id 
+		WHERE h.is_active>-1 AND h.restaurant_id=#{restaurantId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <sql id="Base_Column_List" >
+    id, restaurant_id, happy_hour_name, is_active, create_time, update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.HappyHour" >
+    select
+    <include refid="Base_Column_List" />
+    from happy_hour
+    <where >
+    	<if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="happyHourName != null" >
+        AND happy_hour_name = #{happyHourName,jdbcType=VARCHAR}
+      </if>
+      <if test="isActive != null" >
+        AND is_active = #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from happy_hour
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from happy_hour
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.alfred.model.HappyHour" >
+    insert into happy_hour
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="happyHourName != null" >
+        happy_hour_name,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="happyHourName != null" >
+        #{happyHourName,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.HappyHour" >
+    update happy_hour
+    <set >
+      <if test="happyHourName != null" >
+        happy_hour_name = #{happyHourName,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ReportPluDayItemMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.ReportPluDayItem" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="report_no" property="reportNo" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="restaurant_name" property="restaurantName" jdbcType="VARCHAR" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="revenue_name" property="revenueName" jdbcType="VARCHAR" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="item_main_category_id" property="itemMainCategoryId" jdbcType="INTEGER" />
+    <result column="item_main_category_name" property="itemMainCategoryName" jdbcType="VARCHAR" />
+    <result column="item_category_id" property="itemCategoryId" jdbcType="INTEGER" />
+    <result column="item_category_name" property="itemCategoryName" jdbcType="VARCHAR" />
+    <result column="item_detail_id" property="itemDetailId" jdbcType="INTEGER" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="item_count" property="itemCount" jdbcType="INTEGER" />
+    <result column="item_amount" property="itemAmount" jdbcType="DECIMAL" />
+    <result column="item_void_qty" property="itemVoidQty" jdbcType="INTEGER" />
+    <result column="item_void_price" property="itemVoidPrice" jdbcType="DECIMAL" />
+    <result column="bill_void_qty" property="billVoidQty" jdbcType="INTEGER" />
+    <result column="bill_void_price" property="billVoidPrice" jdbcType="DECIMAL" />
+    <result column="item_hold_qty" property="itemHoldQty" jdbcType="INTEGER" />
+    <result column="item_hold_price" property="itemHoldPrice" jdbcType="DECIMAL" />
+    <result column="item_foc_qty" property="itemFocQty" jdbcType="INTEGER" />
+    <result column="item_foc_price" property="itemFocPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, report_no, restaurant_id, restaurant_name, revenue_id, revenue_name, business_date, 
+    item_main_category_id, item_main_category_name, item_category_id, item_category_name, 
+    item_detail_id, item_name, item_price, item_count, item_amount, item_void_qty, item_void_price, 
+    bill_void_qty, bill_void_price, item_hold_qty, item_hold_price, item_foc_qty, item_foc_price
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.ReportPluDayItem" >
+    select
+    <include refid="Base_Column_List" />
+    from report_plu_day_item
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryName != null" >
+        AND item_main_category_name = #{itemMainCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryName != null" >
+        AND item_category_name = #{itemCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDetailId != null" >
+        AND item_detail_id = #{itemDetailId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemPrice != null" >
+        AND item_price = #{itemPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemCount != null" >
+        AND item_count = #{itemCount,jdbcType=INTEGER}
+      </if>
+      <if test="itemAmount != null" >
+        AND item_amount = #{itemAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="itemVoidQty != null" >
+        AND item_void_qty = #{itemVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidPrice != null" >
+        AND item_void_price = #{itemVoidPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="billVoidQty != null" >
+        AND bill_void_qty = #{billVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="billVoidPrice != null" >
+        AND bill_void_price = #{billVoidPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemHoldQty != null" >
+        AND item_hold_qty = #{itemHoldQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldPrice != null" >
+        AND item_hold_price = #{itemHoldPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemFocQty != null" >
+        AND item_foc_qty = #{itemFocQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemFocPrice != null" >
+        AND item_foc_price = #{itemFocPrice,jdbcType=DECIMAL}
+      </if>
+    </where>
+  </select>
+  
+
+    <select id="queryItemCategory" resultMap="BaseResultMap" parameterType="com.alfred.model.ReportPluDayItem" >
+    SELECT item_category_name,SUM(item_count) AS item_count  FROM report_plu_day_item 
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryName != null" >
+        AND item_main_category_name = #{itemMainCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryName != null" >
+        AND item_category_name = #{itemCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDetailId != null" >
+        AND item_detail_id = #{itemDetailId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemPrice != null" >
+        AND item_price = #{itemPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemCount != null" >
+        AND item_count = #{itemCount,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidQty != null" >
+        AND item_void_qty = #{itemVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidPrice != null" >
+        AND item_void_price = #{itemVoidPrice,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldQty != null" >
+        AND item_hold_qty = #{itemHoldQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldPrice != null" >
+        AND item_hold_price = #{itemHoldPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemFocQty != null" >
+        AND item_foc_qty = #{itemFocQty,jdbcType=INTEGER}
+      </if>
+      and to_days(business_date)=to_days(now()) 
+    </where>
+    GROUP BY item_category_id  ORDER BY  item_count  DESC LIMIT 0,5
+  </select>
+
+    <select id="queryItem" resultMap="BaseResultMap" parameterType="com.alfred.model.ReportPluDayItem" >
+   
+     SELECT item_name ,SUM(item_count) AS item_count FROM report_plu_day_item 
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryName != null" >
+        AND item_main_category_name = #{itemMainCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryName != null" >
+        AND item_category_name = #{itemCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDetailId != null" >
+        AND item_detail_id = #{itemDetailId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemPrice != null" >
+        AND item_price = #{itemPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemCount != null" >
+        AND item_count = #{itemCount,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidQty != null" >
+        AND item_void_qty = #{itemVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidPrice != null" >
+        AND item_void_price = #{itemVoidPrice,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldQty != null" >
+        AND item_hold_qty = #{itemHoldQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldPrice != null" >
+        AND item_hold_price = #{itemHoldPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemFocQty != null" >
+        AND item_foc_qty = #{itemFocQty,jdbcType=INTEGER}
+      </if>
+        and to_days(business_date)=to_days(now()) 
+    </where>
+       GROUP BY item_name  ORDER BY  item_count  DESC  LIMIT 0,5
+  </select>
+  
+  
+
+
+  <select id="queryItemCount" resultType="java.lang.Integer" parameterType="com.alfred.model.ReportPluDayItem" >
+   
+      SELECT CASE 
+        WHEN SUM(item_count) IS NULL THEN 0  ELSE SUM(item_count)  
+        END  AS item_count FROM report_plu_day_item
+        
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryName != null" >
+        AND item_main_category_name = #{itemMainCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryName != null" >
+        AND item_category_name = #{itemCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDetailId != null" >
+        AND item_detail_id = #{itemDetailId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemPrice != null" >
+        AND item_price = #{itemPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemCount != null" >
+        AND item_count = #{itemCount,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidQty != null" >
+        AND item_void_qty = #{itemVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidPrice != null" >
+        AND item_void_price = #{itemVoidPrice,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldQty != null" >
+        AND item_hold_qty = #{itemHoldQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldPrice != null" >
+        AND item_hold_price = #{itemHoldPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemFocQty != null" >
+        AND item_foc_qty = #{itemFocQty,jdbcType=INTEGER}
+      </if>
+        and to_days(business_date)=to_days(now()) 
+    </where>
+  </select>
+  
+  <select id="selectReoprtItemByParam" resultMap="BaseResultMap"  parameterType="java.util.HashMap"  >
+	SELECT business_date,revenue_name,
+	item_main_category_name, item_category_name,
+	item_name, item_count ,(item_price*item_count) item_price
+	FROM report_plu_day_item 
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryName != null" >
+        AND item_main_category_name = #{itemMainCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryName != null" >
+        AND item_category_name = #{itemCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDetailId != null" >
+        AND item_detail_id = #{itemDetailId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemPrice != null" >
+        AND item_price = #{itemPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemCount != null" >
+        AND item_count = #{itemCount,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidQty != null" >
+        AND item_void_qty = #{itemVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidPrice != null" >
+        AND item_void_price = #{itemVoidPrice,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldQty != null" >
+        AND item_hold_qty = #{itemHoldQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldPrice != null" >
+        AND item_hold_price = #{itemHoldPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemFocQty != null" >
+        AND item_foc_qty = #{itemFocQty,jdbcType=INTEGER}
+      </if>
+        <if test="startTime != null" >
+        <![CDATA[ and
+	      business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+    </where>
+      <if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+	    
+	 </if>
+  </select>
+  
+   <select id="getItemReportCount"  resultType="java.lang.Integer" parameterType="java.util.HashMap">
+	SELECT count(*)
+	FROM report_plu_day_item 
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+        <if test="startTime != null" >
+        <![CDATA[ and
+	      business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+    </where>
+  </select>
+  
+  
+  
+  
+   <select id="queryReoprtItemGroup" resultMap="BaseResultMap"  parameterType="java.util.HashMap"  >
+   SELECT business_date,revenue_name,
+    item_main_category_name,  item_category_name, 
+    item_name,  SUM(item_count)item_count  ,SUM(item_price*item_count) item_price
+    FROM report_plu_day_item
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="itemMainCategoryId != null" >
+        AND item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemMainCategoryName != null" >
+        AND item_main_category_name = #{itemMainCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemCategoryId != null" >
+        AND item_category_id = #{itemCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="itemCategoryName != null" >
+        AND item_category_name = #{itemCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemDetailId != null" >
+        AND item_detail_id = #{itemDetailId,jdbcType=INTEGER}
+      </if>
+      <if test="itemName != null" >
+        AND item_name = #{itemName,jdbcType=VARCHAR}
+      </if>
+      <if test="itemPrice != null" >
+        AND item_price = #{itemPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemCount != null" >
+        AND item_count = #{itemCount,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidQty != null" >
+        AND item_void_qty = #{itemVoidQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemVoidPrice != null" >
+        AND item_void_price = #{itemVoidPrice,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldQty != null" >
+        AND item_hold_qty = #{itemHoldQty,jdbcType=INTEGER}
+      </if>
+      <if test="itemHoldPrice != null" >
+        AND item_hold_price = #{itemHoldPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="itemFocQty != null" >
+        AND item_foc_qty = #{itemFocQty,jdbcType=INTEGER}
+      </if>
+        <if test="startTime != null" >
+        <![CDATA[ and
+	      business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+    </where>
+    GROUP BY DATE(business_date)
+    
+      <if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+	    
+	 </if>
+  </select>
+  
+
+   <select id="getAllItemReportTotal"  resultType="java.lang.Integer" parameterType="java.util.HashMap">
+  SELECT COUNT(*) FROM
+	(SELECT
+	COUNT(*)
+    FROM report_plu_day_item
+    <where >
+      <if test="reportNo != null" >
+        AND report_no = #{reportNo,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+        <if test="startTime != null" >
+        <![CDATA[ and
+	      business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+    </where>
+        GROUP BY DATE(business_date)) t
+  </select>
+  
+  
+  <select id="querySalesMainCategory" resultMap="BaseResultMap"  parameterType="java.util.HashMap"  >
+	SELECT item_main_category_name ,SUM(item_count*item_price) item_price FROM
+	report_plu_day_item 
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+        <if test="startTime != null" >
+        <![CDATA[ and
+	      business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+    </where>
+    GROUP BY item_main_category_name
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_plu_day_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_plu_day_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.ReportPluDayItem" >
+    insert into report_plu_day_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reportNo != null" >
+        report_no,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="restaurantName != null" >
+        restaurant_name,
+      </if>
+      <if test="revenueId != null" >
+        revenue_id,
+      </if>
+      <if test="revenueName != null" >
+        revenue_name,
+      </if>
+      <if test="businessDate != null" >
+        business_date,
+      </if>
+      <if test="itemMainCategoryId != null" >
+        item_main_category_id,
+      </if>
+      <if test="itemMainCategoryName != null" >
+        item_main_category_name,
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id,
+      </if>
+      <if test="itemCategoryName != null" >
+        item_category_name,
+      </if>
+      <if test="itemDetailId != null" >
+        item_detail_id,
+      </if>
+      <if test="itemName != null" >
+        item_name,
+      </if>
+      <if test="itemPrice != null" >
+        item_price,
+      </if>
+      <if test="itemCount != null" >
+        item_count,
+      </if>
+      <if test="itemAmount != null" >
+        item_amount,
+      </if>
+      <if test="itemVoidQty != null" >
+        item_void_qty,
+      </if>
+      <if test="itemVoidPrice != null" >
+        item_void_price,
+      </if>
+      <if test="billVoidQty != null" >
+        bill_void_qty,
+      </if>
+      <if test="billVoidPrice != null" >
+        bill_void_price,
+      </if>
+      <if test="itemHoldQty != null" >
+        item_hold_qty,
+      </if>
+      <if test="itemHoldPrice != null" >
+        item_hold_price,
+      </if>
+      <if test="itemFocQty != null" >
+        item_foc_qty,
+      </if>
+      <if test="itemFocPrice != null" >
+        item_foc_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reportNo != null" >
+        #{reportNo,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantName != null" >
+        #{restaurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueId != null" >
+        #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueName != null" >
+        #{revenueName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDate != null" >
+        #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemMainCategoryId != null" >
+        #{itemMainCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryName != null" >
+        #{itemMainCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCategoryId != null" >
+        #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryName != null" >
+        #{itemCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDetailId != null" >
+        #{itemDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPrice != null" >
+        #{itemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="itemCount != null" >
+        #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="itemAmount != null" >
+        #{itemAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="itemVoidQty != null" >
+        #{itemVoidQty,jdbcType=INTEGER},
+      </if>
+      <if test="itemVoidPrice != null" >
+        #{itemVoidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="billVoidQty != null" >
+        #{billVoidQty,jdbcType=INTEGER},
+      </if>
+      <if test="billVoidPrice != null" >
+        #{billVoidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="itemHoldQty != null" >
+        #{itemHoldQty,jdbcType=INTEGER},
+      </if>
+      <if test="itemHoldPrice != null" >
+        #{itemHoldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="itemFocQty != null" >
+        #{itemFocQty,jdbcType=INTEGER},
+      </if>
+      <if test="itemFocPrice != null" >
+        #{itemFocPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.ReportPluDayItem" >
+    update report_plu_day_item
+    <set >
+      <if test="reportNo != null" >
+        report_no = #{reportNo,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantName != null" >
+        restaurant_name = #{restaurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueName != null" >
+        revenue_name = #{revenueName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDate != null" >
+        business_date = #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemMainCategoryId != null" >
+        item_main_category_id = #{itemMainCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemMainCategoryName != null" >
+        item_main_category_name = #{itemMainCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCategoryId != null" >
+        item_category_id = #{itemCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategoryName != null" >
+        item_category_name = #{itemCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDetailId != null" >
+        item_detail_id = #{itemDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPrice != null" >
+        item_price = #{itemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="itemCount != null" >
+        item_count = #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="itemAmount != null" >
+        item_amount = #{itemAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="itemVoidQty != null" >
+        item_void_qty = #{itemVoidQty,jdbcType=INTEGER},
+      </if>
+      <if test="itemVoidPrice != null" >
+        item_void_price = #{itemVoidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="billVoidQty != null" >
+        bill_void_qty = #{billVoidQty,jdbcType=INTEGER},
+      </if>
+      <if test="billVoidPrice != null" >
+        bill_void_price = #{billVoidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="itemHoldQty != null" >
+        item_hold_qty = #{itemHoldQty,jdbcType=INTEGER},
+      </if>
+      <if test="itemHoldPrice != null" >
+        item_hold_price = #{itemHoldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="itemFocQty != null" >
+        item_foc_qty = #{itemFocQty,jdbcType=INTEGER},
+      </if>
+      <if test="itemFocPrice != null" >
+        item_foc_price = #{itemFocPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.UserTimeSheetMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.UserTimeSheet" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="emp_id" property="empId" jdbcType="INTEGER" />
+    <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="logout_time" property="logoutTime" jdbcType="TIMESTAMP" />
+    <result column="total_hours" property="totalHours" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, business_date, restaurant_id, revenue_id, user_id, emp_id, emp_name, login_time, 
+    logout_time, total_hours, status
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.UserTimeSheet" >
+    select
+    <include refid="Base_Column_List" />
+    from user_time_sheet
+    <where >
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="empId != null" >
+        AND emp_id = #{empId,jdbcType=INTEGER}
+      </if>
+      <if test="empName != null" >
+        AND emp_name = #{empName,jdbcType=VARCHAR}
+      </if>
+      <if test="loginTime != null" >
+        AND login_time = #{loginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="logoutTime != null" >
+        AND logout_time = #{logoutTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="totalHours != null" >
+        AND total_hours = #{totalHours,jdbcType=INTEGER}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  
+   <select id="queryUserTimeList" resultMap="BaseResultMap" parameterType="java.util.HashMap"  >
+	SELECT business_date,
+	emp_id,emp_name,login_time,logout_time,total_hours FROM
+	user_time_sheet
+    <where >
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="empId != null" >
+        AND emp_id = #{empId,jdbcType=INTEGER}
+      </if>
+      <if test="empName != null" >
+        AND emp_name = #{empName,jdbcType=VARCHAR}
+      </if>
+      <if test="loginTime != null" >
+        AND login_time = #{loginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="logoutTime != null" >
+        AND logout_time = #{logoutTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="totalHours != null" >
+        AND total_hours = #{totalHours,jdbcType=INTEGER}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=INTEGER}
+      </if>
+       <if test="startTime != null" >
+        <![CDATA[ and
+	      business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+    </where>
+     <if test="start != null">
+		<![CDATA[  limit  #{start,jdbcType=INTEGER}, #{end,jdbcType=INTEGER} ]]>
+	 </if>
+  </select>
+  
+ 
+   <select id="getUserTimeCount" resultType="java.lang.Integer" parameterType="java.util.HashMap" >
+	SELECT count(*) FROM
+	user_time_sheet
+    <where >
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="empId != null" >
+        AND emp_id = #{empId,jdbcType=INTEGER}
+      </if>
+      <if test="empName != null" >
+        AND emp_name = #{empName,jdbcType=VARCHAR}
+      </if>
+      <if test="loginTime != null" >
+        AND login_time = #{loginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="logoutTime != null" >
+        AND logout_time = #{logoutTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="totalHours != null" >
+        AND total_hours = #{totalHours,jdbcType=INTEGER}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=INTEGER}
+      </if>
+       <if test="startTime != null" >
+        <![CDATA[ and
+	      business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+    </where>
+  </select>
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_time_sheet
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_time_sheet
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.UserTimeSheet" >
+    insert into user_time_sheet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessDate != null" >
+        business_date,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="revenueId != null" >
+        revenue_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="empId != null" >
+        emp_id,
+      </if>
+      <if test="empName != null" >
+        emp_name,
+      </if>
+      <if test="loginTime != null" >
+        login_time,
+      </if>
+      <if test="logoutTime != null" >
+        logout_time,
+      </if>
+      <if test="totalHours != null" >
+        total_hours,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessDate != null" >
+        #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueId != null" >
+        #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null" >
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="empName != null" >
+        #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null" >
+        #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalHours != null" >
+        #{totalHours,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.UserTimeSheet" >
+    update user_time_sheet
+    <set >
+      <if test="businessDate != null" >
+        business_date = #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null" >
+        emp_id = #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="empName != null" >
+        emp_name = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null" >
+        logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalHours != null" >
+        total_hours = #{totalHours,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

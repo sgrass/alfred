@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ReportDayTaxMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.ReportDayTax" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="day_sales_id" property="daySalesId" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="restaurant_name" property="restaurantName" jdbcType="VARCHAR" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="revenue_name" property="revenueName" jdbcType="VARCHAR" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="tax_id" property="taxId" jdbcType="INTEGER" />
+    <result column="tax_name" property="taxName" jdbcType="VARCHAR" />
+    <result column="tax_percentage" property="taxPercentage" jdbcType="DECIMAL" />
+    <result column="tax_qty" property="taxQty" jdbcType="INTEGER" />
+    <result column="tax_amount" property="taxAmount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, day_sales_id, restaurant_id, restaurant_name, revenue_id, revenue_name, business_date, 
+    tax_id, tax_name, tax_percentage, tax_qty, tax_amount
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.ReportDayTax" >
+    select
+    <include refid="Base_Column_List" />
+    from report_day_tax
+    <where >
+      <if test="daySalesId != null" >
+        AND day_sales_id = #{daySalesId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="restaurantName != null" >
+        AND restaurant_name = #{restaurantName,jdbcType=VARCHAR}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueName != null" >
+        AND revenue_name = #{revenueName,jdbcType=VARCHAR}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="taxId != null" >
+        AND tax_id = #{taxId,jdbcType=INTEGER}
+      </if>
+      <if test="taxName != null" >
+        AND tax_name = #{taxName,jdbcType=VARCHAR}
+      </if>
+      <if test="taxPercentage != null" >
+        AND tax_percentage = #{taxPercentage,jdbcType=DECIMAL}
+      </if>
+      <if test="taxQty != null" >
+        AND tax_qty = #{taxQty,jdbcType=INTEGER}
+      </if>
+      <if test="taxAmount != null" >
+        AND tax_amount = #{taxAmount,jdbcType=DECIMAL}
+      </if>
+    </where>
+  </select>
+  
+   <select id="queryTaxGroup" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT 
+  tax_name,SUM(tax_qty)tax_qty,
+  SUM(tax_amount) tax_amount 
+ FROM report_day_tax
+    <where >
+      <if test="daySalesId != null" >
+        AND day_sales_id = #{daySalesId,jdbcType=INTEGER}
+      </if>
+       <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="businessDate != null" >
+      <![CDATA[ and
+	      business_date >= STR_TO_DATE(#{businessDate,jdbcType=VARCHAR}, '%Y-%m-%d')  AND  business_date <= date_add(STR_TO_DATE(#{businessDate,jdbcType=VARCHAR}, '%Y-%m-%d'),interval 1 day) 
+	     ]]>
+      </if>
+        <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="taxId != null" >
+        AND tax_id = #{taxId,jdbcType=INTEGER}
+      </if>
+      <if test="taxName != null" >
+        AND tax_name = #{taxName,jdbcType=VARCHAR}
+      </if>
+      <if test="taxPercentage != null" >
+        AND tax_percentage = #{taxPercentage,jdbcType=DECIMAL}
+      </if>
+      <if test="taxQty != null" >
+        AND tax_qty = #{taxQty,jdbcType=INTEGER}
+      </if>
+      <if test="taxAmount != null" >
+        AND tax_amount = #{taxAmount,jdbcType=DECIMAL}
+      </if>
+    </where>
+     GROUP BY tax_name
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_day_tax
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_day_tax
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.ReportDayTax" >
+    insert into report_day_tax
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="daySalesId != null" >
+        day_sales_id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="restaurantName != null" >
+        restaurant_name,
+      </if>
+      <if test="revenueId != null" >
+        revenue_id,
+      </if>
+      <if test="revenueName != null" >
+        revenue_name,
+      </if>
+      <if test="businessDate != null" >
+        business_date,
+      </if>
+      <if test="taxId != null" >
+        tax_id,
+      </if>
+      <if test="taxName != null" >
+        tax_name,
+      </if>
+      <if test="taxPercentage != null" >
+        tax_percentage,
+      </if>
+      <if test="taxQty != null" >
+        tax_qty,
+      </if>
+      <if test="taxAmount != null" >
+        tax_amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="daySalesId != null" >
+        #{daySalesId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantName != null" >
+        #{restaurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueId != null" >
+        #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueName != null" >
+        #{revenueName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDate != null" >
+        #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taxId != null" >
+        #{taxId,jdbcType=INTEGER},
+      </if>
+      <if test="taxName != null" >
+        #{taxName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxPercentage != null" >
+        #{taxPercentage,jdbcType=DECIMAL},
+      </if>
+      <if test="taxQty != null" >
+        #{taxQty,jdbcType=INTEGER},
+      </if>
+      <if test="taxAmount != null" >
+        #{taxAmount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.ReportDayTax" >
+    update report_day_tax
+    <set >
+      <if test="daySalesId != null" >
+        day_sales_id = #{daySalesId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantName != null" >
+        restaurant_name = #{restaurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueName != null" >
+        revenue_name = #{revenueName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDate != null" >
+        business_date = #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taxId != null" >
+        tax_id = #{taxId,jdbcType=INTEGER},
+      </if>
+      <if test="taxName != null" >
+        tax_name = #{taxName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxPercentage != null" >
+        tax_percentage = #{taxPercentage,jdbcType=DECIMAL},
+      </if>
+      <if test="taxQty != null" >
+        tax_qty = #{taxQty,jdbcType=INTEGER},
+      </if>
+      <if test="taxAmount != null" >
+        tax_amount = #{taxAmount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

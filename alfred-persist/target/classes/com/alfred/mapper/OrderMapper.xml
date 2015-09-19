@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.Order" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="INTEGER" />
+    <result column="order_origin_id" property="orderOriginId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="persons" property="persons" jdbcType="INTEGER" />
+    <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+    <result column="sub_total" property="subTotal" jdbcType="DECIMAL" />
+    <result column="tax_amount" property="taxAmount" jdbcType="DECIMAL" />
+    <result column="discount_amount" property="discountAmount" jdbcType="DECIMAL" />
+    <result column="discount_rate" property="discountRate" jdbcType="DECIMAL" />
+    <result column="discount_type" property="discountType" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="DECIMAL" />
+    <result column="session_status" property="sessionStatus" jdbcType="INTEGER" />
+    <result column="rest_id" property="restId" jdbcType="INTEGER" />
+    <result column="revenue_id" property="revenueId" jdbcType="INTEGER" />
+    <result column="place_id" property="placeId" jdbcType="INTEGER" />
+    <result column="table_id" property="tableId" jdbcType="INTEGER" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap type="com.alfred.vo.OrderCharts" id="orderCharts">
+    <result column="sub_total" property="subTotal" jdbcType="DECIMAL" />
+    <result column="tax_amount" property="tax" jdbcType="DECIMAL" />
+    <result column="discount_amount" property="discount" jdbcType="DECIMAL" />
+    <result column="total" property="total" jdbcType="DECIMAL" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap type="com.alfred.vo.RevenueOrderVO" id="orderRevenue">
+    <result column="total" property="total" jdbcType="DECIMAL" />
+    <result column="rev_name" property="revName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.alfred.vo.DiscountVO" id="discount">
+    <result column="bill_no" property="billNumber" jdbcType="INTEGER" />
+    <result column="rev_name" property="revenueName" jdbcType="VARCHAR" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+    <result column="sub_total" property="actuallAmount" jdbcType="DECIMAL" />
+    <result column="discount_amount" property="discount" jdbcType="DECIMAL" />
+    <result column="total" property="grandTotal" jdbcType="DECIMAL" />
+    <result column="business_date" property="businessDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+  
+  
+  <sql id="Base_Column_List" >
+    id, order_no, order_origin_id, user_id, persons, order_status, sub_total, tax_amount, 
+    discount_amount, discount_rate, discount_type, total, session_status, rest_id, revenue_id, 
+    place_id,table_id, business_date, create_time, update_time, sys_create_time, sys_update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.Order" >
+    select
+    <include refid="Base_Column_List" />
+    from order
+    <where >
+      <if test="orderNo != null" >
+        AND order_no = #{orderNo,jdbcType=INTEGER}
+      </if>
+      <if test="orderOriginId != null" >
+        AND order_origin_id = #{orderOriginId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="persons != null" >
+        AND persons = #{persons,jdbcType=INTEGER}
+      </if>
+      <if test="orderStatus != null" >
+        AND order_status = #{orderStatus,jdbcType=INTEGER}
+      </if>
+      <if test="subTotal != null" >
+        AND sub_total = #{subTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="taxAmount != null" >
+        AND tax_amount = #{taxAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountAmount != null" >
+        AND discount_amount = #{discountAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountRate != null" >
+        AND discount_rate = #{discountRate,jdbcType=DECIMAL}
+      </if>
+      <if test="discountType != null" >
+        AND discount_type = #{discountType,jdbcType=INTEGER}
+      </if>
+      <if test="total != null" >
+        AND total = #{total,jdbcType=DECIMAL}
+      </if>
+      <if test="sessionStatus != null" >
+        AND session_status = #{sessionStatus,jdbcType=INTEGER}
+      </if>
+      <if test="restId != null" >
+        AND rest_id = #{restId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="tableId != null" >
+        AND table_id = #{tableId,jdbcType=INTEGER}
+      </if>
+      <if test="placeId != null" >
+        AND place_id = #{placeId,jdbcType=INTEGER}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysCreateTime != null" >
+        AND sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysUpdateTime != null" >
+        AND sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+ 
+  <select id="selectByParamCharts" resultMap="orderCharts" parameterType="java.util.HashMap" >
+    SELECT  date_format(business_date,'%Y-%m-%d') as time ,`sub_total`,`tax_amount`,`discount_amount`,`total` FROM `order` 
+    <where >
+      <if test="orderNo != null" >
+        AND order_no = #{orderNo,jdbcType=INTEGER}
+      </if>
+      <if test="orderOriginId != null" >
+        AND order_origin_id = #{orderOriginId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="persons != null" >
+        AND persons = #{persons,jdbcType=INTEGER}
+      </if>
+      <if test="orderStatus != null" >
+        AND order_status = #{orderStatus,jdbcType=INTEGER}
+      </if>
+      <if test="subTotal != null" >
+        AND sub_total = #{subTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="taxAmount != null" >
+        AND tax_amount = #{taxAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountAmount != null" >
+        AND discount_amount = #{discountAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountRate != null" >
+        AND discount_rate = #{discountRate,jdbcType=DECIMAL}
+      </if>
+      <if test="discountType != null" >
+        AND discount_type = #{discountType,jdbcType=INTEGER}
+      </if>
+      <if test="total != null" >
+        AND total = #{total,jdbcType=DECIMAL}
+      </if>
+      <if test="sessionStatus != null" >
+        AND session_status = #{sessionStatus,jdbcType=INTEGER}
+      </if>
+      <if test="restId != null" >
+        AND rest_id = #{restId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="placeId != null" >
+        AND place_id = #{placeId,jdbcType=INTEGER}
+      </if>
+      <if test="tableId != null" >
+        AND table_id = #{tableId,jdbcType=INTEGER}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysCreateTime != null" >
+        AND sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysUpdateTime != null" >
+        AND sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+     <if test="startTime != null">
+	   <![CDATA[ 
+	   	AND	 business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  
+	   	AND  business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	   ]]>
+	   </if>
+    </where>
+    GROUP BY `business_date`
+  </select>
+  
+<select id="queryReportDiscount" resultMap="discount" parameterType="java.util.HashMap" >
+	SELECT
+	(SELECT
+	rev_name
+	FROM
+	revenue_center r
+	WHERE a.revenue_id = r.id) rev_name,
+	a.`business_date`,
+	b.bill_no,
+	(SELECT
+	table_name
+	FROM
+	`tables` t WHERE a.table_id = t.id) table_name,
+	a.total,
+	(a.`sub_total` -a.discount_amount)discount_amount,
+	a.`sub_total`
+	FROM
+	`ORDER` a,
+	order_bill b
+	<where>
+		and a.id = b.`order_id`
+		<if test="restId != null">
+			AND a.rest_id = #{restId,jdbcType=INTEGER}
+		</if>
+		<if test="revenueId != null">
+			AND a.revenue_id = #{revenueId,jdbcType=INTEGER}
+		</if>
+		 <if test="startTime != null" >
+        <![CDATA[ and
+	      a.business_date >= STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  a.business_date <= date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	     ]]>
+      </if>
+	</where>
+  </select>  
+  
+  
+   <select id="queryOrderToday" resultMap="orderCharts" parameterType="java.util.HashMap" >
+    SELECT  date_format(business_date,'%Y-%m-%d') as time ,`sub_total`,`tax_amount`,`discount_amount`,`total` FROM `order` 
+    <where >
+      <if test="orderNo != null" >
+        AND order_no = #{orderNo,jdbcType=INTEGER}
+      </if>
+      <if test="orderOriginId != null" >
+        AND order_origin_id = #{orderOriginId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="persons != null" >
+        AND persons = #{persons,jdbcType=INTEGER}
+      </if>
+      <if test="orderStatus != null" >
+        AND order_status = #{orderStatus,jdbcType=INTEGER}
+      </if>
+      <if test="subTotal != null" >
+        AND sub_total = #{subTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="taxAmount != null" >
+        AND tax_amount = #{taxAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountAmount != null" >
+        AND discount_amount = #{discountAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountRate != null" >
+        AND discount_rate = #{discountRate,jdbcType=DECIMAL}
+      </if>
+      <if test="discountType != null" >
+        AND discount_type = #{discountType,jdbcType=INTEGER}
+      </if>
+      <if test="total != null" >
+        AND total = #{total,jdbcType=DECIMAL}
+      </if>
+      <if test="sessionStatus != null" >
+        AND session_status = #{sessionStatus,jdbcType=INTEGER}
+      </if>
+      <if test="restId != null" >
+        AND rest_id = #{restId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="placeId != null" >
+        AND place_id = #{placeId,jdbcType=INTEGER}
+      </if>
+      <if test="tableId != null" >
+        AND table_id = #{tableId,jdbcType=INTEGER}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+       and TO_DAYS(business_date)=TO_DAYS(NOW()) 
+    </where>
+  </select>
+  
+  
+	<select id="queryRevenue" resultMap="orderRevenue" parameterType="java.util.HashMap" >
+ 		SELECT  (SELECT rev_name FROM revenue_center WHERE  revenue_id=id) AS rev_name,SUM(total) AS total FROM `order`
+    <where >
+      <if test="orderNo != null" >
+        AND order_no = #{orderNo,jdbcType=INTEGER}
+      </if>
+      <if test="orderOriginId != null" >
+        AND order_origin_id = #{orderOriginId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="persons != null" >
+        AND persons = #{persons,jdbcType=INTEGER}
+      </if>
+      <if test="orderStatus != null" >
+        AND order_status = #{orderStatus,jdbcType=INTEGER}
+      </if>
+      <if test="subTotal != null" >
+        AND sub_total = #{subTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="taxAmount != null" >
+        AND tax_amount = #{taxAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountAmount != null" >
+        AND discount_amount = #{discountAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountRate != null" >
+        AND discount_rate = #{discountRate,jdbcType=DECIMAL}
+      </if>
+      <if test="discountType != null" >
+        AND discount_type = #{discountType,jdbcType=INTEGER}
+      </if>
+      <if test="total != null" >
+        AND total = #{total,jdbcType=DECIMAL}
+      </if>
+      <if test="sessionStatus != null" >
+        AND session_status = #{sessionStatus,jdbcType=INTEGER}
+      </if>
+      <if test="restId != null" >
+        AND rest_id = #{restId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="placeId != null" >
+        AND place_id = #{placeId,jdbcType=INTEGER}
+      </if>
+      <if test="tableId != null" >
+        AND table_id = #{tableId,jdbcType=INTEGER}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysCreateTime != null" >
+        AND sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysUpdateTime != null" >
+        AND sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+      
+      <if test="startTime != null">
+	   	<![CDATA[ 
+	   		and business_date > STR_TO_DATE(#{startTime,jdbcType=VARCHAR}, '%m/%d/%Y')  AND  business_date < date_add(STR_TO_DATE(#{endTime,jdbcType=VARCHAR}, '%m/%d/%Y'),interval 1 day) 
+	   	]]>
+	   </if>
+    </where>
+    GROUP BY revenue_id
+	</select>
+  
+  
+	<select id="selectByParamSession" resultMap="BaseResultMap" parameterType="com.alfred.model.Order" >
+    SELECT session_status, SUM(total) AS total FROM `order`
+    <where >
+      <if test="orderNo != null" >
+        AND order_no = #{orderNo,jdbcType=INTEGER}
+      </if>
+      <if test="orderOriginId != null" >
+        AND order_origin_id = #{orderOriginId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="persons != null" >
+        AND persons = #{persons,jdbcType=INTEGER}
+      </if>
+      <if test="orderStatus != null" >
+        AND order_status = #{orderStatus,jdbcType=INTEGER}
+      </if>
+      <if test="subTotal != null" >
+        AND sub_total = #{subTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="taxAmount != null" >
+        AND tax_amount = #{taxAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountAmount != null" >
+        AND discount_amount = #{discountAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="discountRate != null" >
+        AND discount_rate = #{discountRate,jdbcType=DECIMAL}
+      </if>
+      <if test="discountType != null" >
+        AND discount_type = #{discountType,jdbcType=INTEGER}
+      </if>
+      <if test="total != null" >
+        AND total = #{total,jdbcType=DECIMAL}
+      </if>
+      <if test="sessionStatus != null" >
+        AND session_status = #{sessionStatus,jdbcType=INTEGER}
+      </if>
+      <if test="restId != null" >
+        AND rest_id = #{restId,jdbcType=INTEGER}
+      </if>
+      <if test="revenueId != null" >
+        AND revenue_id = #{revenueId,jdbcType=INTEGER}
+      </if>
+      <if test="placeId != null" >
+        AND place_id = #{placeId,jdbcType=INTEGER}
+      </if>
+      <if test="tableId != null" >
+        AND table_id = #{tableId,jdbcType=INTEGER}
+      </if>
+      <if test="businessDate != null" >
+        AND business_date = #{businessDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysCreateTime != null" >
+        AND sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysUpdateTime != null" >
+        AND sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+        and to_days(business_date)=to_days(now()) 
+    </where>
+    GROUP BY session_status
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.alfred.model.Order" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into `order`
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="orderOriginId != null" >
+        order_origin_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="persons != null" >
+        persons,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="subTotal != null" >
+        sub_total,
+      </if>
+      <if test="taxAmount != null" >
+        tax_amount,
+      </if>
+      <if test="discountAmount != null" >
+        discount_amount,
+      </if>
+      <if test="discountRate != null" >
+        discount_rate,
+      </if>
+      <if test="discountType != null" >
+        discount_type,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="sessionStatus != null" >
+        session_status,
+      </if>
+      <if test="restId != null" >
+        rest_id,
+      </if>
+      <if test="revenueId != null" >
+        revenue_id,
+      </if>
+      <if test="placeId != null" >
+        place_id,
+      </if>
+      <if test="tableId != null" >
+        table_id,
+      </if>
+      <if test="businessDate != null" >
+        business_date,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time,
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="orderOriginId != null" >
+        #{orderOriginId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="persons != null" >
+        #{persons,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="subTotal != null" >
+        #{subTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="taxAmount != null" >
+        #{taxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="discountAmount != null" >
+        #{discountAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null" >
+        #{discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="discountType != null" >
+        #{discountType,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="sessionStatus != null" >
+        #{sessionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="restId != null" >
+        #{restId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueId != null" >
+        #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="placeId != null" >
+        #{placeId,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null" >
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="businessDate != null" >
+        #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateById" parameterType="com.alfred.model.Order" >
+    update order
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="orderOriginId != null" >
+        order_origin_id = #{orderOriginId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="persons != null" >
+        persons = #{persons,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="subTotal != null" >
+        sub_total = #{subTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="taxAmount != null" >
+        tax_amount = #{taxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="discountAmount != null" >
+        discount_amount = #{discountAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null" >
+        discount_rate = #{discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="discountType != null" >
+        discount_type = #{discountType,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="sessionStatus != null" >
+        session_status = #{sessionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="restId != null" >
+        rest_id = #{restId,jdbcType=INTEGER},
+      </if>
+      <if test="revenueId != null" >
+        revenue_id = #{revenueId,jdbcType=INTEGER},
+      </if>
+      <if test="placeId != null" >
+        place_id = #{placeId,jdbcType=INTEGER}
+      </if>
+      <if test="tableId != null" >
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="businessDate != null" >
+        business_date = #{businessDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

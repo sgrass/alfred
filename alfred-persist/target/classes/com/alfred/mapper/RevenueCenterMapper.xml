@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.RevenueCenterMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.RevenueCenter" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="print_id" property="printId" jdbcType="INTEGER" />
+    <result column="rev_name" property="revName" jdbcType="VARCHAR" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="happy_hour_id" property="happyHourId" jdbcType="INTEGER" />
+    <result column="happy_start_time" property="happyStartTime" jdbcType="TIMESTAMP" />
+    <result column="happy_end_time" property="happyEndTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="BaseResultMapRevenue" type="com.alfred.vo.RevenueCenterAndPrinter" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="print_id" property="printId" jdbcType="INTEGER" />
+    <result column="rev_name" property="revName" jdbcType="VARCHAR" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="printer_group_name" property="printerGroupName" jdbcType="VARCHAR" />
+    <result column="printer_name" property="printerName" jdbcType="VARCHAR" />
+    <result column="happy_hour_id" property="happyHourId" jdbcType="INTEGER" />
+    <result column="happy_hour_name" property="happyHourName" jdbcType="VARCHAR" />
+    <result column="happy_start_time" property="happyStartTime" jdbcType="TIMESTAMP" />
+    <result column="happy_end_time" property="happyEndTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+ <select id="selectByRevenList" resultMap="BaseResultMapRevenue" parameterType="com.alfred.vo.RevenueCenterAndPrinter" >
+	SELECT a.id,
+	a.rev_name,
+	a.is_active,
+	a.print_id,
+	(SELECT printer_name FROM printer b WHERE a.print_id=b.id) printer_name,
+	a.happy_hour_id,
+	(SELECT c.happy_hour_name FROM happy_hour c WHERE a.happy_hour_id=c.id)
+	happy_hour_name,
+	a.happy_start_time,
+	a.happy_end_time FROM revenue_center a
+       <where>
+	      <if test="restaurantId != null" >
+	        AND a.restaurant_id = #{restaurantId,jdbcType=INTEGER}
+	      </if>
+	      <if test="printId != null" >
+	        AND a.print_id = #{printId,jdbcType=INTEGER}
+	      </if>
+	      <if test="revName != null" >
+	        AND a.rev_name = #{revName,jdbcType=VARCHAR}
+	      </if>
+	      <if test="isActive != null" >
+	      <![CDATA[  AND a.is_active >= #{isActive,jdbcType=INTEGER}]]>
+	      </if>
+	      </where>
+  </select>
+  
+  <sql id="Base_Column_List" >
+    id, restaurant_id, print_id, rev_name, is_active, happy_hour_id, happy_start_time, 
+    happy_end_time, create_time, update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.RevenueCenter" >
+    select
+    <include refid="Base_Column_List" />
+    from revenue_center
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="printId != null" >
+        AND print_id = #{printId,jdbcType=INTEGER}
+      </if>
+      <if test="revName != null" >
+        AND rev_name = #{revName,jdbcType=VARCHAR}
+      </if>
+      <if test="isActive != null" >
+        AND is_active = #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="happyHourId != null" >
+        AND happy_hour_id = #{happyHourId,jdbcType=INTEGER}
+      </if>
+      <if test="happyStartTime != null" >
+        AND happy_start_time = #{happyStartTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="happyEndTime != null" >
+        AND happy_end_time = #{happyEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectByRevenueCenter" resultMap="BaseResultMap" parameterType="com.alfred.model.RevenueCenter" >
+    select
+    <include refid="Base_Column_List" />
+    from revenue_center
+    <where >
+ 
+      <if test="revName != null" >
+        AND rev_name = #{revName,jdbcType=VARCHAR}
+      </if>
+       <if test="id != null" >
+        <![CDATA[ AND id != #{id,jdbcType=INTEGER} ]]>
+      </if>
+    
+    </where>
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from revenue_center
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from revenue_center
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.alfred.model.RevenueCenter" >
+    insert into revenue_center
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="printId != null" >
+        print_id,
+      </if>
+      <if test="revName != null" >
+        rev_name,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+      <if test="happyHourId != null" >
+        happy_hour_id,
+      </if>
+      <if test="happyStartTime != null" >
+        happy_start_time,
+      </if>
+      <if test="happyEndTime != null" >
+        happy_end_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="printId != null" >
+        #{printId,jdbcType=INTEGER},
+      </if>
+      <if test="revName != null" >
+        #{revName,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="happyHourId != null" >
+        #{happyHourId,jdbcType=INTEGER},
+      </if>
+      <if test="happyStartTime != null" >
+        #{happyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="happyEndTime != null" >
+        #{happyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.RevenueCenter" >
+    update revenue_center
+    <set >
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="printId != null" >
+        print_id = #{printId,jdbcType=INTEGER},
+      </if>
+      <if test="revName != null" >
+        rev_name = #{revName,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="happyHourId != null" >
+        happy_hour_id = #{happyHourId,jdbcType=INTEGER},
+      </if>
+      <if test="happyStartTime != null" >
+        happy_start_time = #{happyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="happyEndTime != null" >
+        happy_end_time = #{happyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrinter" parameterType="com.alfred.model.RevenueCenter" >
+	update revenue_center
+	<set>
+		<if test="printId != null">
+			print_id = null,
+		</if>
+		<if test="updateTime != null">
+			update_time = #{updateTime,jdbcType=TIMESTAMP},
+		</if>
+	</set>
+	<where>
+		<if test="restaurantId != null">
+			and restaurant_id = #{restaurantId,jdbcType=INTEGER}
+		</if>
+		<if test="printId != null">
+			and print_id = #{printId,jdbcType=INTEGER}
+		</if>
+
+
+	</where>
+  </update>
+  
+</mapper>

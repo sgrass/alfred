@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.OrderDetailTaxMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.OrderDetailTax" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="order_detail_id" property="orderDetailId" jdbcType="INTEGER" />
+    <result column="tax_id" property="taxId" jdbcType="INTEGER" />
+    <result column="tax_name" property="taxName" jdbcType="VARCHAR" />
+    <result column="tax_percentage" property="taxPercentage" jdbcType="DECIMAL" />
+    <result column="tax_price" property="taxPrice" jdbcType="DECIMAL" />
+    <result column="tax_type" property="taxType" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_create_time" property="sysCreateTime" jdbcType="TIMESTAMP" />
+    <result column="sys_update_time" property="sysUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_id, order_detail_id, tax_id, tax_name, tax_percentage, tax_price, tax_type, 
+    create_time, update_time, sys_create_time, sys_update_time
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.OrderDetailTax" >
+    select
+    <include refid="Base_Column_List" />
+    from order_detail_tax
+    <where >
+      <if test="orderId != null" >
+        AND order_id = #{orderId,jdbcType=INTEGER}
+      </if>
+      <if test="orderDetailId != null" >
+        AND order_detail_id = #{orderDetailId,jdbcType=INTEGER}
+      </if>
+      <if test="taxId != null" >
+        AND tax_id = #{taxId,jdbcType=INTEGER}
+      </if>
+      <if test="taxName != null" >
+        AND tax_name = #{taxName,jdbcType=VARCHAR}
+      </if>
+      <if test="taxPercentage != null" >
+        AND tax_percentage = #{taxPercentage,jdbcType=DECIMAL}
+      </if>
+      <if test="taxPrice != null" >
+        AND tax_price = #{taxPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="taxType != null" >
+        AND tax_type = #{taxType,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysCreateTime != null" >
+        AND sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sysUpdateTime != null" >
+        AND sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail_tax
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order_detail_tax
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.OrderDetailTax" >
+    insert into order_detail_tax
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderDetailId != null" >
+        order_detail_id,
+      </if>
+      <if test="taxId != null" >
+        tax_id,
+      </if>
+      <if test="taxName != null" >
+        tax_name,
+      </if>
+      <if test="taxPercentage != null" >
+        tax_percentage,
+      </if>
+      <if test="taxPrice != null" >
+        tax_price,
+      </if>
+      <if test="taxType != null" >
+        tax_type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time,
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderDetailId != null" >
+        #{orderDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="taxId != null" >
+        #{taxId,jdbcType=INTEGER},
+      </if>
+      <if test="taxName != null" >
+        #{taxName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxPercentage != null" >
+        #{taxPercentage,jdbcType=DECIMAL},
+      </if>
+      <if test="taxPrice != null" >
+        #{taxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxType != null" >
+        #{taxType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.OrderDetailTax" >
+    update order_detail_tax
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderDetailId != null" >
+        order_detail_id = #{orderDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="taxId != null" >
+        tax_id = #{taxId,jdbcType=INTEGER},
+      </if>
+      <if test="taxName != null" >
+        tax_name = #{taxName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxPercentage != null" >
+        tax_percentage = #{taxPercentage,jdbcType=DECIMAL},
+      </if>
+      <if test="taxPrice != null" >
+        tax_price = #{taxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxType != null" >
+        tax_type = #{taxType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysCreateTime != null" >
+        sys_create_time = #{sysCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUpdateTime != null" >
+        sys_update_time = #{sysUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

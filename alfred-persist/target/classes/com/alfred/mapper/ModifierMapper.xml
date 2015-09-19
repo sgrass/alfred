@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alfred.dao.ModifierMapper" >
+  <resultMap id="BaseResultMap" type="com.alfred.model.Modifier" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="modifier_name" property="modifierName" jdbcType="VARCHAR" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="is_default" property="isDefault" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="categoryResultMap" type="com.alfred.vo.ModifierVO">
+    <id column="a_id" property="id" jdbcType="INTEGER" />
+    <result column="a_restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+    <result column="a_type" property="type" jdbcType="INTEGER" />
+    <result column="a_category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="a_is_active" property="isActive" jdbcType="VARCHAR" />
+    <collection property="modifierList" ofType="com.alfred.model.Modifier" column="b_category_id">
+			<id column="b_id" property="id" jdbcType="INTEGER" />
+	    <result column="b_restaurant_id" property="restaurantId" jdbcType="INTEGER" />
+	    <result column="b_type" property="type" jdbcType="INTEGER" />
+	    <result column="b_category_id" property="categoryId" jdbcType="INTEGER" />
+	    <result column="b_category_name" property="categoryName" jdbcType="VARCHAR" />
+	    <result column="b_price" property="price" jdbcType="DECIMAL" />
+	    <result column="b_modifier_name" property="modifierName" jdbcType="VARCHAR" />
+	    <result column="b_is_active" property="isActive" jdbcType="INTEGER" />    	
+	    <result column="b_is_default" property="isDefault" jdbcType="INTEGER" />    	
+    </collection>
+  </resultMap>
+  
+   <select id="selectModifierCategory" resultMap="categoryResultMap" parameterType="java.lang.Integer">
+  	SELECT 
+  	a.id as a_id, a.restaurant_id as a_restaurant_id, a.type as a_type, a.category_name as a_category_name, a.is_active as a_is_active,
+  	b.id as b_id, b.restaurant_id as b_restaurant_id, b.type as b_type, b.category_id as b_category_id, 
+  	b.category_name as b_category_name, b.price as b_price, b.modifier_name as b_modifier_name, b.is_active as b_is_active, b.is_default as b_is_default
+  	FROM (SELECT * FROM modifier WHERE TYPE=0 ) a LEFT JOIN (SELECT * FROM modifier WHERE TYPE=1) b 
+  	ON a.id = b.category_id WHERE a.is_active >= 0 AND a.restaurant_id=#{restaurantId,jdbcType=INTEGER}
+  	ORDER BY a.id DESC
+  </select>
+  
+  <sql id="Base_Column_List" >
+    id, restaurant_id, type, category_id, category_name, price, modifier_name, is_active,is_default
+  </sql>
+  
+  <select id="selectCountByParam" resultType="java.lang.Integer" parameterType="com.alfred.model.Modifier" >
+    select count(1) from modifier
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        AND type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="categoryId != null" >
+        AND category_id = #{categoryId,jdbcType=INTEGER}
+      </if>
+      <if test="categoryName != null" >
+        AND category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null" >
+        AND price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="modifierName != null" >
+        AND modifier_name = #{modifierName,jdbcType=VARCHAR}
+      </if>
+      <if test="isActive != null" >
+        AND is_active = #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="isDefault != null" >
+        AND is_default = #{isDefault,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  <select id="selectPageByParam" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from modifier
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        AND type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="categoryId != null" >
+        AND category_id = #{categoryId,jdbcType=INTEGER}
+      </if>
+      <if test="categoryName != null" >
+        AND category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null" >
+        AND price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="modifierName != null" >
+        AND modifier_name = #{modifierName,jdbcType=VARCHAR}
+      </if>
+      <if test="isActive != null" >
+        AND is_active = #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="isDefault != null" >
+        AND is_default = #{isDefault,jdbcType=INTEGER}
+      </if>
+    </where>
+    LIMIT #{startRow},#{perPageSize}
+  </select>
+  
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.alfred.model.Modifier" >
+    select
+    <include refid="Base_Column_List" />
+    from modifier
+    <where >
+      <if test="restaurantId != null" >
+        AND restaurant_id = #{restaurantId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        AND type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="categoryId != null" >
+        AND category_id = #{categoryId,jdbcType=INTEGER}
+      </if>
+      <if test="categoryName != null" >
+        AND category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null" >
+        AND price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="modifierName != null" >
+        AND modifier_name = #{modifierName,jdbcType=VARCHAR}
+      </if>
+      <if test="isActive != null" >
+        AND is_active = #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="isDefault != null" >
+        AND is_default = #{isDefault,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from modifier
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from modifier
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.alfred.model.Modifier" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into modifier
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="modifierName != null" >
+        modifier_name,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+      <if test="isDefault != null" >
+        is_default,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="modifierName != null" >
+        #{modifierName,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.alfred.model.Modifier" >
+    update modifier
+    <set >
+      <if test="restaurantId != null" >
+        restaurant_id = #{restaurantId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="modifierName != null" >
+        modifier_name = #{modifierName,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="isDefault != null" >
+        is_default = #{isDefault,jdbcType=INTEGER},
+      </if>
+      
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByCategoryId" parameterType="com.alfred.model.Modifier">
+  	update modifier SET is_default=0 WHERE restaurant_id = #{restaurantId,jdbcType=INTEGER} AND category_id = #{categoryId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="deleteByCategoryId" parameterType="com.alfred.model.Modifier">
+  	update modifier SET is_active=-1 WHERE category_id = #{categoryId,jdbcType=INTEGER}
+  </update>
+</mapper>
